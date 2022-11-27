@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="methods">
+        <item>업로드할 운동을 선택해주세요</item>
+        <item>벤치프레스</item>
+        <item>인클라인 벤치프레스</item>
+        <item>덤벨컬</item>
+        <item>바벨컬</item>
+        <item>라잉 바벨</item>
+        <item>시티드 덤벨</item>
+        <item>렛풀다운</item>
+        <item>덤벨로우</item>
+    </string-array>
+</resources>

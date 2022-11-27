@@ -1,0 +1,1167 @@
+[
+    [
+      {
+        "position": {
+          "x": 0.4851256012916565,
+          "y": 0.25506868958473206
+        },
+        "part": "PoseLandmark.NOSE"
+      },
+      {
+        "position": {
+          "x": 0.49608415365219116,
+          "y": 0.24269291758537292
+        },
+        "part": "PoseLandmark.LEFT_EYE_INNER"
+      },
+      {
+        "position": {
+          "x": 0.5042567849159241,
+          "y": 0.24344509840011597
+        },
+        "part": "PoseLandmark.LEFT_EYE"
+      },
+      {
+        "position": {
+          "x": 0.5129813551902771,
+          "y": 0.24420934915542603
+        },
+        "part": "PoseLandmark.LEFT_EYE_OUTER"
+      },
+      {
+        "position": {
+          "x": 0.47261694073677063,
+          "y": 0.24534139037132263
+        },
+        "part": "PoseLandmark.RIGHT_EYE_INNER"
+      },
+      {
+        "position": {
+          "x": 0.46552178263664246,
+          "y": 0.24722233414649963
+        },
+        "part": "PoseLandmark.RIGHT_EYE"
+      },
+      {
+        "position": {
+          "x": 0.4587823748588562,
+          "y": 0.24896523356437683
+        },
+        "part": "PoseLandmark.RIGHT_EYE_OUTER"
+      },
+      {
+        "position": {
+          "x": 0.5211180448532104,
+          "y": 0.2532862424850464
+        },
+        "part": "PoseLandmark.LEFT_EAR"
+      },
+      {
+        "position": {
+          "x": 0.4489147365093231,
+          "y": 0.25794678926467896
+        },
+        "part": "PoseLandmark.RIGHT_EAR"
+      },
+      {
+        "position": {
+          "x": 0.5014224648475647,
+          "y": 0.2724817991256714
+        },
+        "part": "PoseLandmark.MOUTH_LEFT"
+      },
+      {
+        "position": {
+          "x": 0.4744647443294525,
+          "y": 0.27531543374061584
+        },
+        "part": "PoseLandmark.MOUTH_RIGHT"
+      },
+      {
+        "position": {
+          "x": 0.5807525515556335,
+          "y": 0.36006975173950195
+        },
+        "part": "PoseLandmark.LEFT_SHOULDER"
+      },
+      {
+        "position": {
+          "x": 0.3921877443790436,
+          "y": 0.35905152559280396
+        },
+        "part": "PoseLandmark.RIGHT_SHOULDER"
+      },
+      {
+        "position": {
+          "x": 0.622542142868042,
+          "y": 0.4734712839126587
+        },
+        "part": "PoseLandmark.LEFT_ELBOW"
+      },
+      {
+        "position": {
+          "x": 0.3508840799331665,
+          "y": 0.46936818957328796
+        },
+        "part": "PoseLandmark.RIGHT_ELBOW"
+      },
+      {
+        "position": {
+          "x": 0.6483948230743408,
+          "y": 0.5680572986602783
+        },
+        "part": "PoseLandmark.LEFT_WRIST"
+      },
+      {
+        "position": {
+          "x": 0.3255142569541931,
+          "y": 0.5637370347976685
+        },
+        "part": "PoseLandmark.RIGHT_WRIST"
+      },
+      {
+        "position": {
+          "x": 0.6534978151321411,
+          "y": 0.600807785987854
+        },
+        "part": "PoseLandmark.LEFT_PINKY"
+      },
+      {
+        "position": {
+          "x": 0.31467944383621216,
+          "y": 0.597036600112915
+        },
+        "part": "PoseLandmark.RIGHT_PINKY"
+      },
+      {
+        "position": {
+          "x": 0.6494261622428894,
+          "y": 0.5979641675949097
+        },
+        "part": "PoseLandmark.LEFT_INDEX"
+      },
+      {
+        "position": {
+          "x": 0.32677900791168213,
+          "y": 0.5977091193199158
+        },
+        "part": "PoseLandmark.RIGHT_INDEX"
+      },
+      {
+        "position": {
+          "x": 0.6408204436302185,
+          "y": 0.5869969129562378
+        },
+        "part": "PoseLandmark.LEFT_THUMB"
+      },
+      {
+        "position": {
+          "x": 0.33700889348983765,
+          "y": 0.5856671929359436
+        },
+        "part": "PoseLandmark.RIGHT_THUMB"
+      },
+      {
+        "position": {
+          "x": 0.540343165397644,
+          "y": 0.585369348526001
+        },
+        "part": "PoseLandmark.LEFT_HIP"
+      },
+      {
+        "position": {
+          "x": 0.4278421103954315,
+          "y": 0.5840353965759277
+        },
+        "part": "PoseLandmark.RIGHT_HIP"
+      },
+      {
+        "position": {
+          "x": 0.5394577383995056,
+          "y": 0.7527443170547485
+        },
+        "part": "PoseLandmark.LEFT_KNEE"
+      },
+      {
+        "position": {
+          "x": 0.43417349457740784,
+          "y": 0.7536417245864868
+        },
+        "part": "PoseLandmark.RIGHT_KNEE"
+      },
+      {
+        "position": {
+          "x": 0.5262006521224976,
+          "y": 0.9105179905891418
+        },
+        "part": "PoseLandmark.LEFT_ANKLE"
+      },
+      {
+        "position": {
+          "x": 0.45605695247650146,
+          "y": 0.9049448370933533
+        },
+        "part": "PoseLandmark.RIGHT_ANKLE"
+      },
+      {
+        "position": {
+          "x": 0.5116449594497681,
+          "y": 0.9286907911300659
+        },
+        "part": "PoseLandmark.LEFT_HEEL"
+      },
+      {
+        "position": {
+          "x": 0.47458264231681824,
+          "y": 0.9233744144439697
+        },
+        "part": "PoseLandmark.RIGHT_HEEL"
+      },
+      {
+        "position": {
+          "x": 0.5797998309135437,
+          "y": 0.9715427756309509
+        },
+        "part": "PoseLandmark.LEFT_FOOT_INDEX"
+      },
+      {
+        "position": {
+          "x": 0.41605013608932495,
+          "y": 0.9673402309417725
+        },
+        "part": "PoseLandmark.RIGHT_FOOT_INDEX"
+      }
+    ],
+    [
+      {
+        "position": {
+          "x": 0.4835195243358612,
+          "y": 0.1901184320449829
+        },
+        "part": "PoseLandmark.NOSE"
+      },
+      {
+        "position": {
+          "x": 0.4952107071876526,
+          "y": 0.17908385396003723
+        },
+        "part": "PoseLandmark.LEFT_EYE_INNER"
+      },
+      {
+        "position": {
+          "x": 0.5044183731079102,
+          "y": 0.17998003959655762
+        },
+        "part": "PoseLandmark.LEFT_EYE"
+      },
+      {
+        "position": {
+          "x": 0.5123895406723022,
+          "y": 0.18106544017791748
+        },
+        "part": "PoseLandmark.LEFT_EYE_OUTER"
+      },
+      {
+        "position": {
+          "x": 0.47329437732696533,
+          "y": 0.17996618151664734
+        },
+        "part": "PoseLandmark.RIGHT_EYE_INNER"
+      },
+      {
+        "position": {
+          "x": 0.46713292598724365,
+          "y": 0.1810612827539444
+        },
+        "part": "PoseLandmark.RIGHT_EYE"
+      },
+      {
+        "position": {
+          "x": 0.46061787009239197,
+          "y": 0.18246853351593018
+        },
+        "part": "PoseLandmark.RIGHT_EYE_OUTER"
+      },
+      {
+        "position": {
+          "x": 0.5209242105484009,
+          "y": 0.1915493607521057
+        },
+        "part": "PoseLandmark.LEFT_EAR"
+      },
+      {
+        "position": {
+          "x": 0.44796261191368103,
+          "y": 0.19363096356391907
+        },
+        "part": "PoseLandmark.RIGHT_EAR"
+      },
+      {
+        "position": {
+          "x": 0.5014567375183105,
+          "y": 0.20939424633979797
+        },
+        "part": "PoseLandmark.MOUTH_LEFT"
+      },
+      {
+        "position": {
+          "x": 0.4731754660606384,
+          "y": 0.20909050107002258
+        },
+        "part": "PoseLandmark.MOUTH_RIGHT"
+      },
+      {
+        "position": {
+          "x": 0.5900059938430786,
+          "y": 0.2973248064517975
+        },
+        "part": "PoseLandmark.LEFT_SHOULDER"
+      },
+      {
+        "position": {
+          "x": 0.3904505670070648,
+          "y": 0.30765125155448914
+        },
+        "part": "PoseLandmark.RIGHT_SHOULDER"
+      },
+      {
+        "position": {
+          "x": 0.6233533620834351,
+          "y": 0.41686105728149414
+        },
+        "part": "PoseLandmark.LEFT_ELBOW"
+      },
+      {
+        "position": {
+          "x": 0.3559654951095581,
+          "y": 0.4226451516151428
+        },
+        "part": "PoseLandmark.RIGHT_ELBOW"
+      },
+      {
+        "position": {
+          "x": 0.6395964622497559,
+          "y": 0.5169041156768799
+        },
+        "part": "PoseLandmark.LEFT_WRIST"
+      },
+      {
+        "position": {
+          "x": 0.3317033648490906,
+          "y": 0.5256525874137878
+        },
+        "part": "PoseLandmark.RIGHT_WRIST"
+      },
+      {
+        "position": {
+          "x": 0.6474018096923828,
+          "y": 0.5532674193382263
+        },
+        "part": "PoseLandmark.LEFT_PINKY"
+      },
+      {
+        "position": {
+          "x": 0.3219049572944641,
+          "y": 0.5582155585289001
+        },
+        "part": "PoseLandmark.RIGHT_PINKY"
+      },
+      {
+        "position": {
+          "x": 0.6333785653114319,
+          "y": 0.5546966195106506
+        },
+        "part": "PoseLandmark.LEFT_INDEX"
+      },
+      {
+        "position": {
+          "x": 0.33091241121292114,
+          "y": 0.5622053742408752
+        },
+        "part": "PoseLandmark.RIGHT_INDEX"
+      },
+      {
+        "position": {
+          "x": 0.6242395639419556,
+          "y": 0.5431776642799377
+        },
+        "part": "PoseLandmark.LEFT_THUMB"
+      },
+      {
+        "position": {
+          "x": 0.340798944234848,
+          "y": 0.5501522421836853
+        },
+        "part": "PoseLandmark.RIGHT_THUMB"
+      },
+      {
+        "position": {
+          "x": 0.5535459518432617,
+          "y": 0.5491955876350403
+        },
+        "part": "PoseLandmark.LEFT_HIP"
+      },
+      {
+        "position": {
+          "x": 0.42728158831596375,
+          "y": 0.5492409467697144
+        },
+        "part": "PoseLandmark.RIGHT_HIP"
+      },
+      {
+        "position": {
+          "x": 0.5582974553108215,
+          "y": 0.7235392332077026
+        },
+        "part": "PoseLandmark.LEFT_KNEE"
+      },
+      {
+        "position": {
+          "x": 0.42427974939346313,
+          "y": 0.7274006009101868
+        },
+        "part": "PoseLandmark.RIGHT_KNEE"
+      },
+      {
+        "position": {
+          "x": 0.5458760857582092,
+          "y": 0.8612388372421265
+        },
+        "part": "PoseLandmark.LEFT_ANKLE"
+      },
+      {
+        "position": {
+          "x": 0.4211825728416443,
+          "y": 0.873579740524292
+        },
+        "part": "PoseLandmark.RIGHT_ANKLE"
+      },
+      {
+        "position": {
+          "x": 0.5271864533424377,
+          "y": 0.8796499967575073
+        },
+        "part": "PoseLandmark.LEFT_HEEL"
+      },
+      {
+        "position": {
+          "x": 0.4422575831413269,
+          "y": 0.8897669315338135
+        },
+        "part": "PoseLandmark.RIGHT_HEEL"
+      },
+      {
+        "position": {
+          "x": 0.5888593792915344,
+          "y": 0.9403243064880371
+        },
+        "part": "PoseLandmark.LEFT_FOOT_INDEX"
+      },
+      {
+        "position": {
+          "x": 0.38042283058166504,
+          "y": 0.9426980018615723
+        },
+        "part": "PoseLandmark.RIGHT_FOOT_INDEX"
+      }
+    ],
+    [
+      {
+        "position": {
+          "x": 0.417983740568161,
+          "y": 0.32070109248161316
+        },
+        "part": "PoseLandmark.NOSE"
+      },
+      {
+        "position": {
+          "x": 0.42913639545440674,
+          "y": 0.3091960549354553
+        },
+        "part": "PoseLandmark.LEFT_EYE_INNER"
+      },
+      {
+        "position": {
+          "x": 0.43574637174606323,
+          "y": 0.3107326626777649
+        },
+        "part": "PoseLandmark.LEFT_EYE"
+      },
+      {
+        "position": {
+          "x": 0.4414323568344116,
+          "y": 0.31235602498054504
+        },
+        "part": "PoseLandmark.LEFT_EYE_OUTER"
+      },
+      {
+        "position": {
+          "x": 0.41444912552833557,
+          "y": 0.3082418143749237
+        },
+        "part": "PoseLandmark.RIGHT_EYE_INNER"
+      },
+      {
+        "position": {
+          "x": 0.4076392650604248,
+          "y": 0.30880892276763916
+        },
+        "part": "PoseLandmark.RIGHT_EYE"
+      },
+      {
+        "position": {
+          "x": 0.40042123198509216,
+          "y": 0.3099229335784912
+        },
+        "part": "PoseLandmark.RIGHT_EYE_OUTER"
+      },
+      {
+        "position": {
+          "x": 0.45507046580314636,
+          "y": 0.32210201025009155
+        },
+        "part": "PoseLandmark.LEFT_EAR"
+      },
+      {
+        "position": {
+          "x": 0.39853158593177795,
+          "y": 0.31860435009002686
+        },
+        "part": "PoseLandmark.RIGHT_EAR"
+      },
+      {
+        "position": {
+          "x": 0.43142539262771606,
+          "y": 0.3358405828475952
+        },
+        "part": "PoseLandmark.MOUTH_LEFT"
+      },
+      {
+        "position": {
+          "x": 0.40638571977615356,
+          "y": 0.3350260555744171
+        },
+        "part": "PoseLandmark.MOUTH_RIGHT"
+      },
+      {
+        "position": {
+          "x": 0.5046429634094238,
+          "y": 0.39989280700683594
+        },
+        "part": "PoseLandmark.LEFT_SHOULDER"
+      },
+      {
+        "position": {
+          "x": 0.35284891724586487,
+          "y": 0.38411879539489746
+        },
+        "part": "PoseLandmark.RIGHT_SHOULDER"
+      },
+      {
+        "position": {
+          "x": 0.599677324295044,
+          "y": 0.4002610146999359
+        },
+        "part": "PoseLandmark.LEFT_ELBOW"
+      },
+      {
+        "position": {
+          "x": 0.2707374691963196,
+          "y": 0.3181394338607788
+        },
+        "part": "PoseLandmark.RIGHT_ELBOW"
+      },
+      {
+        "position": {
+          "x": 0.6830825209617615,
+          "y": 0.3739354610443115
+        },
+        "part": "PoseLandmark.LEFT_WRIST"
+      },
+      {
+        "position": {
+          "x": 0.2412632703781128,
+          "y": 0.23863545060157776
+        },
+        "part": "PoseLandmark.RIGHT_WRIST"
+      },
+      {
+        "position": {
+          "x": 0.7074530720710754,
+          "y": 0.3853965997695923
+        },
+        "part": "PoseLandmark.LEFT_PINKY"
+      },
+      {
+        "position": {
+          "x": 0.22525963187217712,
+          "y": 0.2213924527168274
+        },
+        "part": "PoseLandmark.RIGHT_PINKY"
+      },
+      {
+        "position": {
+          "x": 0.7008641362190247,
+          "y": 0.3835017681121826
+        },
+        "part": "PoseLandmark.LEFT_INDEX"
+      },
+      {
+        "position": {
+          "x": 0.23410166800022125,
+          "y": 0.2159578800201416
+        },
+        "part": "PoseLandmark.RIGHT_INDEX"
+      },
+      {
+        "position": {
+          "x": 0.6899504661560059,
+          "y": 0.3814322352409363
+        },
+        "part": "PoseLandmark.LEFT_THUMB"
+      },
+      {
+        "position": {
+          "x": 0.24266865849494934,
+          "y": 0.2230026125907898
+        },
+        "part": "PoseLandmark.RIGHT_THUMB"
+      },
+      {
+        "position": {
+          "x": 0.45194733142852783,
+          "y": 0.5923604965209961
+        },
+        "part": "PoseLandmark.LEFT_HIP"
+      },
+      {
+        "position": {
+          "x": 0.3529665768146515,
+          "y": 0.5883238911628723
+        },
+        "part": "PoseLandmark.RIGHT_HIP"
+      },
+      {
+        "position": {
+          "x": 0.4540407955646515,
+          "y": 0.7258298993110657
+        },
+        "part": "PoseLandmark.LEFT_KNEE"
+      },
+      {
+        "position": {
+          "x": 0.33805450797080994,
+          "y": 0.7302822470664978
+        },
+        "part": "PoseLandmark.RIGHT_KNEE"
+      },
+      {
+        "position": {
+          "x": 0.4434659779071808,
+          "y": 0.8545509576797485
+        },
+        "part": "PoseLandmark.LEFT_ANKLE"
+      },
+      {
+        "position": {
+          "x": 0.3472695052623749,
+          "y": 0.8609229326248169
+        },
+        "part": "PoseLandmark.RIGHT_ANKLE"
+      },
+      {
+        "position": {
+          "x": 0.4238220155239105,
+          "y": 0.8732597827911377
+        },
+        "part": "PoseLandmark.LEFT_HEEL"
+      },
+      {
+        "position": {
+          "x": 0.3704288899898529,
+          "y": 0.8778908252716064
+        },
+        "part": "PoseLandmark.RIGHT_HEEL"
+      },
+      {
+        "position": {
+          "x": 0.4739576578140259,
+          "y": 0.9045133590698242
+        },
+        "part": "PoseLandmark.LEFT_FOOT_INDEX"
+      },
+      {
+        "position": {
+          "x": 0.3071771562099457,
+          "y": 0.91356360912323
+        },
+        "part": "PoseLandmark.RIGHT_FOOT_INDEX"
+      }
+    ],
+    [
+      {
+        "position": {
+          "x": 0.470469206571579,
+          "y": 0.32665613293647766
+        },
+        "part": "PoseLandmark.NOSE"
+      },
+      {
+        "position": {
+          "x": 0.4816400706768036,
+          "y": 0.31578630208969116
+        },
+        "part": "PoseLandmark.LEFT_EYE_INNER"
+      },
+      {
+        "position": {
+          "x": 0.49096155166625977,
+          "y": 0.31587690114974976
+        },
+        "part": "PoseLandmark.LEFT_EYE"
+      },
+      {
+        "position": {
+          "x": 0.5002978444099426,
+          "y": 0.31616470217704773
+        },
+        "part": "PoseLandmark.LEFT_EYE_OUTER"
+      },
+      {
+        "position": {
+          "x": 0.46906426548957825,
+          "y": 0.3156810700893402
+        },
+        "part": "PoseLandmark.RIGHT_EYE_INNER"
+      },
+      {
+        "position": {
+          "x": 0.4661623537540436,
+          "y": 0.3156812787055969
+        },
+        "part": "PoseLandmark.RIGHT_EYE"
+      },
+      {
+        "position": {
+          "x": 0.4627704918384552,
+          "y": 0.3157906234264374
+        },
+        "part": "PoseLandmark.RIGHT_EYE_OUTER"
+      },
+      {
+        "position": {
+          "x": 0.5227973461151123,
+          "y": 0.3219963312149048
+        },
+        "part": "PoseLandmark.LEFT_EAR"
+      },
+      {
+        "position": {
+          "x": 0.47234970331192017,
+          "y": 0.3198793828487396
+        },
+        "part": "PoseLandmark.RIGHT_EAR"
+      },
+      {
+        "position": {
+          "x": 0.48567864298820496,
+          "y": 0.3394361734390259
+        },
+        "part": "PoseLandmark.MOUTH_LEFT"
+      },
+      {
+        "position": {
+          "x": 0.46854323148727417,
+          "y": 0.3390960395336151
+        },
+        "part": "PoseLandmark.MOUTH_RIGHT"
+      },
+      {
+        "position": {
+          "x": 0.5819640755653381,
+          "y": 0.3956493139266968
+        },
+        "part": "PoseLandmark.LEFT_SHOULDER"
+      },
+      {
+        "position": {
+          "x": 0.4195985198020935,
+          "y": 0.3852967321872711
+        },
+        "part": "PoseLandmark.RIGHT_SHOULDER"
+      },
+      {
+        "position": {
+          "x": 0.6804524064064026,
+          "y": 0.4369104504585266
+        },
+        "part": "PoseLandmark.LEFT_ELBOW"
+      },
+      {
+        "position": {
+          "x": 0.33648401498794556,
+          "y": 0.36552807688713074
+        },
+        "part": "PoseLandmark.RIGHT_ELBOW"
+      },
+      {
+        "position": {
+          "x": 0.7692112922668457,
+          "y": 0.4806519150733948
+        },
+        "part": "PoseLandmark.LEFT_WRIST"
+      },
+      {
+        "position": {
+          "x": 0.37851035594940186,
+          "y": 0.29089435935020447
+        },
+        "part": "PoseLandmark.RIGHT_WRIST"
+      },
+      {
+        "position": {
+          "x": 0.7782725691795349,
+          "y": 0.504465639591217
+        },
+        "part": "PoseLandmark.LEFT_PINKY"
+      },
+      {
+        "position": {
+          "x": 0.39457932114601135,
+          "y": 0.27062666416168213
+        },
+        "part": "PoseLandmark.RIGHT_PINKY"
+      },
+      {
+        "position": {
+          "x": 0.7676527500152588,
+          "y": 0.5052149295806885
+        },
+        "part": "PoseLandmark.LEFT_INDEX"
+      },
+      {
+        "position": {
+          "x": 0.40256965160369873,
+          "y": 0.26855185627937317
+        },
+        "part": "PoseLandmark.RIGHT_INDEX"
+      },
+      {
+        "position": {
+          "x": 0.7605715394020081,
+          "y": 0.49810510873794556
+        },
+        "part": "PoseLandmark.LEFT_THUMB"
+      },
+      {
+        "position": {
+          "x": 0.4015789031982422,
+          "y": 0.276887983083725
+        },
+        "part": "PoseLandmark.RIGHT_THUMB"
+      },
+      {
+        "position": {
+          "x": 0.48445072770118713,
+          "y": 0.5851086378097534
+        },
+        "part": "PoseLandmark.LEFT_HIP"
+      },
+      {
+        "position": {
+          "x": 0.40082448720932007,
+          "y": 0.5488429069519043
+        },
+        "part": "PoseLandmark.RIGHT_HIP"
+      },
+      {
+        "position": {
+          "x": 0.47212666273117065,
+          "y": 0.7389097213745117
+        },
+        "part": "PoseLandmark.LEFT_KNEE"
+      },
+      {
+        "position": {
+          "x": 0.24620625376701355,
+          "y": 0.4997716248035431
+        },
+        "part": "PoseLandmark.RIGHT_KNEE"
+      },
+      {
+        "position": {
+          "x": 0.44238540530204773,
+          "y": 0.8775191307067871
+        },
+        "part": "PoseLandmark.LEFT_ANKLE"
+      },
+      {
+        "position": {
+          "x": 0.2321363240480423,
+          "y": 0.6603839993476868
+        },
+        "part": "PoseLandmark.RIGHT_ANKLE"
+      },
+      {
+        "position": {
+          "x": 0.42546510696411133,
+          "y": 0.8969858884811401
+        },
+        "part": "PoseLandmark.LEFT_HEEL"
+      },
+      {
+        "position": {
+          "x": 0.2529214918613434,
+          "y": 0.6938010454177856
+        },
+        "part": "PoseLandmark.RIGHT_HEEL"
+      },
+      {
+        "position": {
+          "x": 0.4884461760520935,
+          "y": 0.9328465461730957
+        },
+        "part": "PoseLandmark.LEFT_FOOT_INDEX"
+      },
+      {
+        "position": {
+          "x": 0.13873541355133057,
+          "y": 0.6636656522750854
+        },
+        "part": "PoseLandmark.RIGHT_FOOT_INDEX"
+      }
+    ],
+    [
+      {
+        "position": {
+          "x": 0.5269390940666199,
+          "y": 0.4351532459259033
+        },
+        "part": "PoseLandmark.NOSE"
+      },
+      {
+        "position": {
+          "x": 0.5327872633934021,
+          "y": 0.41553500294685364
+        },
+        "part": "PoseLandmark.LEFT_EYE_INNER"
+      },
+      {
+        "position": {
+          "x": 0.5382790565490723,
+          "y": 0.4151642918586731
+        },
+        "part": "PoseLandmark.LEFT_EYE"
+      },
+      {
+        "position": {
+          "x": 0.5428232550621033,
+          "y": 0.4145234227180481
+        },
+        "part": "PoseLandmark.LEFT_EYE_OUTER"
+      },
+      {
+        "position": {
+          "x": 0.5086443424224854,
+          "y": 0.4141220152378082
+        },
+        "part": "PoseLandmark.RIGHT_EYE_INNER"
+      },
+      {
+        "position": {
+          "x": 0.4955001771450043,
+          "y": 0.4130784869194031
+        },
+        "part": "PoseLandmark.RIGHT_EYE"
+      },
+      {
+        "position": {
+          "x": 0.48194581270217896,
+          "y": 0.41292211413383484
+        },
+        "part": "PoseLandmark.RIGHT_EYE_OUTER"
+      },
+      {
+        "position": {
+          "x": 0.5287399291992188,
+          "y": 0.41727304458618164
+        },
+        "part": "PoseLandmark.LEFT_EAR"
+      },
+      {
+        "position": {
+          "x": 0.45197123289108276,
+          "y": 0.41921886801719666
+        },
+        "part": "PoseLandmark.RIGHT_EAR"
+      },
+      {
+        "position": {
+          "x": 0.5319293737411499,
+          "y": 0.4541206955909729
+        },
+        "part": "PoseLandmark.MOUTH_LEFT"
+      },
+      {
+        "position": {
+          "x": 0.5014292001724243,
+          "y": 0.4544960558414459
+        },
+        "part": "PoseLandmark.MOUTH_RIGHT"
+      },
+      {
+        "position": {
+          "x": 0.5941793322563171,
+          "y": 0.5195359587669373
+        },
+        "part": "PoseLandmark.LEFT_SHOULDER"
+      },
+      {
+        "position": {
+          "x": 0.34180381894111633,
+          "y": 0.5261998176574707
+        },
+        "part": "PoseLandmark.RIGHT_SHOULDER"
+      },
+      {
+        "position": {
+          "x": 0.6857732534408569,
+          "y": 0.6443917751312256
+        },
+        "part": "PoseLandmark.LEFT_ELBOW"
+      },
+      {
+        "position": {
+          "x": 0.26610708236694336,
+          "y": 0.678787112236023
+        },
+        "part": "PoseLandmark.RIGHT_ELBOW"
+      },
+      {
+        "position": {
+          "x": 0.6062167882919312,
+          "y": 0.7309489846229553
+        },
+        "part": "PoseLandmark.LEFT_WRIST"
+      },
+      {
+        "position": {
+          "x": 0.4299989342689514,
+          "y": 0.7632976770401001
+        },
+        "part": "PoseLandmark.RIGHT_WRIST"
+      },
+      {
+        "position": {
+          "x": 0.6025027632713318,
+          "y": 0.7782822251319885
+        },
+        "part": "PoseLandmark.LEFT_PINKY"
+      },
+      {
+        "position": {
+          "x": 0.43668022751808167,
+          "y": 0.8046606183052063
+        },
+        "part": "PoseLandmark.RIGHT_PINKY"
+      },
+      {
+        "position": {
+          "x": 0.5668408274650574,
+          "y": 0.7724317312240601
+        },
+        "part": "PoseLandmark.LEFT_INDEX"
+      },
+      {
+        "position": {
+          "x": 0.47089871764183044,
+          "y": 0.7989538908004761
+        },
+        "part": "PoseLandmark.RIGHT_INDEX"
+      },
+      {
+        "position": {
+          "x": 0.555244505405426,
+          "y": 0.757646918296814
+        },
+        "part": "PoseLandmark.LEFT_THUMB"
+      },
+      {
+        "position": {
+          "x": 0.4716280698776245,
+          "y": 0.786454439163208
+        },
+        "part": "PoseLandmark.RIGHT_THUMB"
+      },
+      {
+        "position": {
+          "x": 0.5060979723930359,
+          "y": 0.7096593379974365
+        },
+        "part": "PoseLandmark.LEFT_HIP"
+      },
+      {
+        "position": {
+          "x": 0.38111013174057007,
+          "y": 0.7168627381324768
+        },
+        "part": "PoseLandmark.RIGHT_HIP"
+      },
+      {
+        "position": {
+          "x": 0.7160924077033997,
+          "y": 0.6971292495727539
+        },
+        "part": "PoseLandmark.LEFT_KNEE"
+      },
+      {
+        "position": {
+          "x": 0.2179490178823471,
+          "y": 0.7526394128799438
+        },
+        "part": "PoseLandmark.RIGHT_KNEE"
+      },
+      {
+        "position": {
+          "x": 0.5328282117843628,
+          "y": 0.7908964157104492
+        },
+        "part": "PoseLandmark.LEFT_ANKLE"
+      },
+      {
+        "position": {
+          "x": 0.3711492419242859,
+          "y": 0.7894485592842102
+        },
+        "part": "PoseLandmark.RIGHT_ANKLE"
+      },
+      {
+        "position": {
+          "x": 0.4939752519130707,
+          "y": 0.7988359928131104
+        },
+        "part": "PoseLandmark.LEFT_HEEL"
+      },
+      {
+        "position": {
+          "x": 0.39198192954063416,
+          "y": 0.7869011163711548
+        },
+        "part": "PoseLandmark.RIGHT_HEEL"
+      },
+      {
+        "position": {
+          "x": 0.580519437789917,
+          "y": 0.8592026829719543
+        },
+        "part": "PoseLandmark.LEFT_FOOT_INDEX"
+      },
+      {
+        "position": {
+          "x": 0.3487551510334015,
+          "y": 0.8748294711112976
+        },
+        "part": "PoseLandmark.RIGHT_FOOT_INDEX"
+      }
+    ]
+  ]
