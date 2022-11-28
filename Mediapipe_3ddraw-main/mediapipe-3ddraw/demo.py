@@ -7,6 +7,7 @@ import csv
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_hands = mp.solutions.hands
+mp_pose = mp.solutions.pose
 
 '''
 # For static images:
@@ -68,9 +69,9 @@ save_csv_name = 'landmark.csv'
 # For webcam input:
 cap = cv2.VideoCapture(0)
 with mp_hands.Hands(model_complexity=0,
-        min_detection_confidence=0.5, 
+        min_detection_confidence=0.5,
         min_tracking_confidence=0.5) as hands, \
-    open(os.path.join(save_csv_dir, save_csv_name), 
+    open(os.path.join(save_csv_dir, save_csv_name),
             'w', encoding='utf-8', newline="") as f:
   writer = csv.DictWriter(f, fieldnames=fields_name())
   writer.writeheader()
@@ -114,22 +115,22 @@ with mp_hands.Hands(model_complexity=0,
     for hand_world_landmarks, handedness in zip(results.multi_hand_world_landmarks, results.multi_handedness):
       handedness_index = 0
 
-      
+
       if handedness.classification[0].label == 'Left':
           handedness_index = 0
-          
-          
+
+
           landmarks = hand_world_landmarks
           #Left hand landmark
           for i, landmark in enumerate(landmarks.landmark):
             record[str(i) + '_x'] = landmark.x
             record[str(i) + '_y'] = landmark.y
             record[str(i) + '_z'] = landmark.z
-        
-      
+
+
 
       elif handedness.classification[0].label == 'Right':
-          
+
           handedness_index = 1
           landmarks = hand_world_landmarks
           #Right hand landmark
@@ -151,13 +152,13 @@ with mp_hands.Hands(model_complexity=0,
                   record[str(i) + '_x'] = landmark.x
                   record[str(i) + '_y'] = landmark.y
                   record[str(i) + '_z'] = landmark.z
-                
+
           elif handedness.classification[1].label == 'Right':
               #Right hand landmark
               handedness_index = 1
               landmarks = results.multi_hand_world_landmarks[1]
               landmarks = hand_world_landmarks
-            
+
               for i, landmark in enumerate(landmarks.landmark):
                   record1[str(i+21) + '_x'] = landmark.x
                   record1[str(i+21) + '_y'] = landmark.y
@@ -166,8 +167,8 @@ with mp_hands.Hands(model_complexity=0,
     d={**record, **record1}
     writer.writerow(d)
     #for hand_world_landmarks in results.multi_hand_world_landmarks:
-    #  mp_drawing.plot_landmarks(
+    #    mp_drawing.plot_landmarks(
     #    hand_world_landmarks, mp_hands.HAND_CONNECTIONS, azimuth=5)
-    # Flip the image horizontally for a selfie-view display.
+        #Flip the image horizontally for a selfie-view display.
 
 cap.release()

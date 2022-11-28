@@ -1,16 +1,17 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from utils import DLT
+
 plt.style.use('seaborn')
 
-
 pose_keypoints = np.array([16, 14, 12, 11, 13, 15, 24, 23, 25, 26, 27, 28])
+
 
 def read_keypoints(filename):
     fin = open(filename, 'r')
 
     kpts = []
-    while(True):
+    while (True):
         line = fin.readline()
         if line == '': break
 
@@ -25,9 +26,8 @@ def read_keypoints(filename):
 
 
 def visualize_3d(p3ds):
-
     """Now visualize in 3D"""
-    torso = [[0, 1] , [1, 7], [7, 6], [6, 0]]
+    torso = [[0, 1], [1, 7], [7, 6], [6, 0]]
     armr = [[1, 3], [3, 5]]
     arml = [[0, 2], [2, 4]]
     legr = [[6, 8], [8, 10]]
@@ -41,18 +41,18 @@ def visualize_3d(p3ds):
     ax = fig.add_subplot(111, projection='3d')
 
     for framenum, kpts3d in enumerate(p3ds):
-        if framenum%2 == 0: continue #skip every 2nd frame
+        if framenum % 2 == 0: continue  # skip every 2nd frame
         for bodypart, part_color in zip(body, colors):
             for _c in bodypart:
-                ax.plot(xs = [kpts3d[_c[0],0], kpts3d[_c[1],0]], ys = [kpts3d[_c[0],1], kpts3d[_c[1],1]], zs = [kpts3d[_c[0],2], kpts3d[_c[1],2]], linewidth = 4, c = part_color)
+                ax.plot(xs=[kpts3d[_c[0], 0], kpts3d[_c[1], 0]], ys=[kpts3d[_c[0], 1], kpts3d[_c[1], 1]],
+                        zs=[kpts3d[_c[0], 2], kpts3d[_c[1], 2]], linewidth=4, c=part_color)
 
-        #uncomment these if you want scatter plot of keypoints and their indices.
+        # uncomment these if you want scatter plot of keypoints and their indices.
         # for i in range(12):
         #     #ax.text(kpts3d[i,0], kpts3d[i,1], kpts3d[i,2], str(i))
         #     #ax.scatter(xs = kpts3d[i:i+1,0], ys = kpts3d[i:i+1,1], zs = kpts3d[i:i+1,2])
 
-
-        #ax.set_axis_off()
+        ax.set_axis_off()
         ax.set_xticks([])
         ax.set_yticks([])
         ax.set_zticks([])
@@ -65,9 +65,8 @@ def visualize_3d(p3ds):
         ax.set_zlabel('z')
         plt.pause(0.1)
         ax.cla()
-
+        plt.show()
 
 if __name__ == '__main__':
-
     p3ds = read_keypoints('kpts_3d.dat')
     visualize_3d(p3ds)
