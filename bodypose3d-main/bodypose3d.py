@@ -146,6 +146,7 @@ def run_mp(input_stream1, input_stream2, P0, P1):
         #mp_drawing.draw_landmarks(frame1, results1.pose_landmarks, mp_pose.POSE_CONNECTIONS,
         #                          landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style())
         # draw into plot
+
         mp_drawing.plot_landmarks(
             results1.pose_world_landmarks, mp_pose.POSE_CONNECTIONS)
         cv.imshow('cam1', frame1)
