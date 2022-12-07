@@ -167,8 +167,8 @@ with mp_hands.Hands(model_complexity=0,
     d={**record, **record1}
     writer.writerow(d)
     #for hand_world_landmarks in results.multi_hand_world_landmarks:
-    #    mp_drawing.plot_landmarks(
-    #    hand_world_landmarks, mp_hands.HAND_CONNECTIONS, azimuth=5)
+    mp_drawing.plot_landmarks(
+        hand_world_landmarks, mp_hands.HAND_CONNECTIONS, azimuth=5)
         #Flip the image horizontally for a selfie-view display.
 
 cap.release()

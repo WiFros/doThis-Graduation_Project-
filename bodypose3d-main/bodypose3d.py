@@ -94,6 +94,7 @@ def run_mp(input_stream1, input_stream2, P0, P1):
                 pxl_x = int(round(pxl_x))
                 pxl_y = int(round(pxl_y))
                 cv.circle(frame0, (pxl_x, pxl_y), 3, (0, 0, 255), -1)  # add keypoint detection points into figure
+
                 kpts = [pxl_x, pxl_y]
                 frame0_keypoints.append(kpts)
         else:
@@ -138,14 +139,15 @@ def run_mp(input_stream1, input_stream2, P0, P1):
         frame_p3ds = np.array(frame_p3ds).reshape((12, 3))
         kpts_3d.append(frame_p3ds)
 
-
         # uncomment these if you want to see the full keypoints detections
-        mp_drawing.draw_landmarks(frame0, results0.pose_landmarks, mp_pose.POSE_CONNECTIONS,
-                                  landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style())
+        #mp_drawing.draw_landmarks(frame0, results0.pose_landmarks, mp_pose.POSE_CONNECTIONS,
+        #                          landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style())
 
-        mp_drawing.draw_landmarks(frame1, results1.pose_landmarks, mp_pose.POSE_CONNECTIONS,
-                                  landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style())
-
+        #mp_drawing.draw_landmarks(frame1, results1.pose_landmarks, mp_pose.POSE_CONNECTIONS,
+        #                          landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style())
+        # draw into plot
+        mp_drawing.plot_landmarks(
+            results1.pose_world_landmarks, mp_pose.POSE_CONNECTIONS)
         cv.imshow('cam1', frame1)
         cv.imshow('cam0', frame0)
 
@@ -159,11 +161,12 @@ def run_mp(input_stream1, input_stream2, P0, P1):
     return np.array(kpts_cam0), np.array(kpts_cam1), np.array(kpts_3d)
 
 
+
 if __name__ == '__main__':
 
     # this will load the sample videos if no camera ID is given
-    input_stream1 = 'media/cam0_test.mp4'
-    input_stream2 = 'media/cam1_test.mp4'
+    input_stream1 = 'media/test2.mp4'
+    input_stream2 = 'media/test2.mp4'
 
     # put camera id as command line arguements
     if len(sys.argv) == 3:

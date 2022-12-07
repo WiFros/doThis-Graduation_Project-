@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from utils import DLT
+from celluloid import Camera
 
 plt.style.use('seaborn')
 
@@ -38,6 +39,8 @@ def visualize_3d(p3ds):
     from mpl_toolkits.mplot3d import Axes3D
 
     fig = plt.figure()
+    #camera = Camera(fig)
+
     ax = fig.add_subplot(111, projection='3d')
 
     for framenum, kpts3d in enumerate(p3ds):
@@ -46,11 +49,10 @@ def visualize_3d(p3ds):
             for _c in bodypart:
                 ax.plot(xs=[kpts3d[_c[0], 0], kpts3d[_c[1], 0]], ys=[kpts3d[_c[0], 1], kpts3d[_c[1], 1]],
                         zs=[kpts3d[_c[0], 2], kpts3d[_c[1], 2]], linewidth=4, c=part_color)
-
         # uncomment these if you want scatter plot of keypoints and their indices.
-        # for i in range(12):
-        #     #ax.text(kpts3d[i,0], kpts3d[i,1], kpts3d[i,2], str(i))
-        #     #ax.scatter(xs = kpts3d[i:i+1,0], ys = kpts3d[i:i+1,1], zs = kpts3d[i:i+1,2])
+        for i in range(12):
+            ax.text(kpts3d[i,0], kpts3d[i,1], kpts3d[i,2], str(i))
+            ax.scatter(xs = kpts3d[i:i+1,0], ys = kpts3d[i:i+1,1], zs = kpts3d[i:i+1,2])
 
         ax.set_axis_off()
         ax.set_xticks([])
@@ -65,7 +67,6 @@ def visualize_3d(p3ds):
         ax.set_zlabel('z')
         plt.pause(0.1)
         ax.cla()
-        plt.show()
 
 if __name__ == '__main__':
     p3ds = read_keypoints('kpts_3d.dat')
