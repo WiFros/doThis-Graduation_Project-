@@ -15,15 +15,15 @@ This Colab helps to create and validate a training set for the k-NN classifier d
 Connect the Colab to hosted Python3 runtime (check top-right corner) and then install required dependencies.
 """
 
-!pip install pillow==8.1.0
-!pip install matplotlib==3.1.3
-!pip install numpy==1.19.3
-!pip install opencv-python==4.5.1.48
-!pip install tqdm==4.56.0
-!pip install requests==2.25.1
+# pip install pillow==8.1.0
+# pip install matplotlib==3.1.3
+# pip install numpy==1.19.3
+# pip install opencv-python==4.5.1.48
+# pip install tqdm==4.56.0
+# pip install requests==2.25.1
 
-!pip install mediapipe==0.8.3
-!pip install -U pillow
+# pip install mediapipe==0.8.3
+# pip install -U pillow
 
 """# Codebase
 
@@ -889,19 +889,17 @@ zip -r fitness_poses_images_in.zip fitness_poses_images_in
 And run the code below to upload it to the Colab runtime
 """
 
-from google.colab import files
+# from google.colab import files
 import os
 
-uploaded = files.upload()
 os.listdir('.')
 
 """Unzip the archive:"""
 
 import zipfile
 import io
+zipfile.ZipFile("C:/Users/dlrhd/.vscode/zolzak/doThis-Graduation_Project-/pose_classification/fitness_poses_images_in.zip").extractall()
 
-zf = zipfile.ZipFile(io.BytesIO(uploaded['fitness_poses_images_in.zip']), "r")
-zf.extractall()
 os.listdir('.')
 
 """## Bootstrap images"""
@@ -943,8 +941,8 @@ bootstrap_helper.print_images_out_statistics()
 
 # After initial bootstrapping images without detected poses were still saved in
 # the folderd (but not in the CSVs) for debug purpose. Let's remove them.
-bootstrap_helper.align_images_and_csvs(print_removed_items=False)
-bootstrap_helper.print_images_out_statistics()
+# bootstrap_helper.align_images_and_csvs(print_removed_items=False)
+# bootstrap_helper.print_images_out_statistics()
 
 """## Manual filtration
 
@@ -954,8 +952,8 @@ Align CSVs and image folders once you are done.
 """
 
 # Align CSVs with filtered images.
-bootstrap_helper.align_images_and_csvs(print_removed_items=False)
-bootstrap_helper.print_images_out_statistics()
+# bootstrap_helper.align_images_and_csvs(print_removed_items=False)
+# bootstrap_helper.print_images_out_statistics()
 
 """## Automatic filtration
 
@@ -1042,11 +1040,11 @@ dump_for_the_app()
 """
 
 # Upload your video.
-uploaded = files.upload()
+uploaded = 'pushups-sample(1).mp4'
 os.listdir('.')
 
 # Specify your video name and target pose class to count the repetitions.
-video_path = 'pushups-sample.mp4'
+video_path = 'pushups-sample(1).mp4'
 class_name='pushups_down'
 out_video_path = 'pushups-sample-out.mov'
 
@@ -1202,8 +1200,6 @@ pose_tracker.close()
 if output_frame is not None:
   show_image(output_frame)
   print("frame!!!!last")
-
-# train_3 = pd.read_csv('data/train.csv',nrows=3) 
 
 os.listdir("/content/frame2")
 
