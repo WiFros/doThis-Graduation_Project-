@@ -27,6 +27,7 @@ def read_keypoints(filename):
 
 
 def visualize_3d(p3ds):
+    print(p3ds)
     """Now visualize in 3D"""
     torso = [[0, 1], [1, 7], [7, 6], [6, 0]]
     armr = [[1, 3], [3, 5]]
@@ -44,7 +45,7 @@ def visualize_3d(p3ds):
     ax = fig.add_subplot(111, projection='3d')
 
     for framenum, kpts3d in enumerate(p3ds):
-        if framenum % 2 == 0: continue  # skip every 2nd frame
+        #if framenum % 2 == 0: continue  # skip every 2nd frame
         for bodypart, part_color in zip(body, colors):
             for _c in bodypart:
                 ax.plot(xs=[kpts3d[_c[0], 0], kpts3d[_c[1], 0]], ys=[kpts3d[_c[0], 1], kpts3d[_c[1], 1]],
@@ -59,12 +60,13 @@ def visualize_3d(p3ds):
         ax.set_yticks([])
         ax.set_zticks([])
 
-        ax.set_xlim3d(-10, 10)
+        ax.set_xlim3d(-3, 2)
         ax.set_xlabel('x')
-        ax.set_ylim3d(-10, 10)
+        ax.set_ylim3d(-2, 10)
         ax.set_ylabel('y')
-        ax.set_zlim3d(-10, 10)
+        ax.set_zlim3d(-5, 0)
         ax.set_zlabel('z')
+
         plt.pause(0.1)
         ax.cla()
 
