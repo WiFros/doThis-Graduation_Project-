@@ -6,6 +6,7 @@ import concurrent.futures
 import sys, os
 
 from openpose_skeleton import skeleton
+
 face = [0, 1, 2, 3, 4, 25, 26, 27, 28, 29, 30, 31, 32]
 eyes_and_ears = [1, 2, 3, 4, 25, 26, 27, 28, 31, 32]
 upper_body = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
@@ -105,6 +106,8 @@ def process_pair(frame1, frame2):
 
 def get_pose_similarity(video_path1, video_path2, exercise):# main function
 
+    sk_frame1 = []
+    sk_frame2 = []
     video1_path = video_path1
     video2_path = video_path2
 
@@ -141,11 +144,10 @@ def get_pose_similarity(video_path1, video_path2, exercise):# main function
 
         for i, index in enumerate(top_indices):
             frame1, frame2 = frame_pairs[index]
-            cv2.imwrite(f"video1_frame_{i + 1}_cosine.jpg", frame1)
-            cv2.imwrite(f"video2_frame_{i + 1}_cosine.jpg", frame2)
-
+            sk_frame1[index] = skeleton(frame1, index)
+            sk_frame2[index] = skeleton(frame2, index)
+            cv2.imwrite('./test.png', sk_frame1[3]) #test
             similarities.append(similarity_list[index])
     else:
         print("No poses found in one or both videos.")
     return similarities
-
