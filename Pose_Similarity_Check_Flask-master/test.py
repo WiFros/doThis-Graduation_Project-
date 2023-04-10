@@ -1,84 +1,93 @@
 import cv2
 import mediapipe as mp
 import numpy as np
-from mediapipe.python.solutions.pose_test import PoseTest
-from mediapipe.framework.formats import landmark_pb2 as fm
+import matplotlib.pyplot as plt
+from scipy.spatial.distance import cosine
+from concurrent.futures import ThreadPoolExecutor
+
+# Mediapipe 설정
 mp_drawing = mp.solutions.drawing_utils
-mp_drawing_styles = mp.solutions.drawing_styles
 mp_pose = mp.solutions.pose
 
-# For static images:
-IMAGE_FILES = []
-BG_COLOR = (192, 192, 192) # gray
-with mp_pose.Pose(
-    static_image_mode=True,
-    model_complexity=2,
-    enable_segmentation=True,
-    min_detection_confidence=0.5) as pose:
-  for idx, file in enumerate(IMAGE_FILES):
-    image = cv2.imread(file)
-    image_height, image_width, _ = image.shape
-    # Convert the BGR image to RGB before processing.
-    results = pose.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+upper_body = [11, 12, 13, 14, 15, 16, 23, 24]
+lower_body = [25, 26, 27, 28, 29, 30]
 
-    if not results.pose_landmarks:
-      continue
-    print(
-        f'Nose coordinates: ('
-        f'{results.pose_landmarks.landmark[mp_pose.PoseLandmark.NOSE].x * image_width}, '
-        f'{results.pose_landmarks.landmark[mp_pose.PoseLandmark.NOSE].y * image_height})'
-    )
+def normalize_landmarks(landmarks, frame_shape):
+    height, width, _ = frame_shape
+    normalized_landmarks = []
 
-    annotated_image = image.copy()
-    # Draw segmentation on the image.
-    # To improve segmentation around boundaries, consider applying a joint
-    # bilateral filter to "results.segmentation_mask" with "image".
-    condition = np.stack((results.segmentation_mask,) * 3, axis=-1) > 0.1
-    bg_image = np.zeros(image.shape, dtype=np.uint8)
-    bg_image[:] = BG_COLOR
-    annotated_image = np.where(condition, annotated_image, bg_image)
-    # Draw pose landmarks on the image.
-    mp_drawing.draw_landmarks(
-        annotated_image,
-        results.pose_landmarks,
-        mp_pose.POSE_CONNECTIONS,
-        landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style())
-    cv2.imwrite('/tmp/annotated_image' + str(idx) + '.png', annotated_image)
-    # Plot pose world landmarks.
-    mp_drawing.plot_landmarks(
-        results.pose_world_landmarks, mp_pose.POSE_CONNECTIONS)
+    for lm in landmarks:
+        normalized_landmarks.append((lm.x * width, lm.y * height))
 
-# For webcam input:
-cap = cv2.VideoCapture(0)
-with mp_pose.Pose(
-    min_detection_confidence=0.5,
-    min_tracking_confidence=0.5) as pose:
-  while cap.isOpened():
-    success, image = cap.read()
-    if not success:
-      print("Ignoring empty camera frame.")
-      # If loading a video, use 'break' instead of 'continue'.
-      continue
+    return normalized_landmarks
 
-    # To improve performance, optionally mark the image as not writeable to
-    # pass by reference.
-    image.flags.writeable = False
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    results = pose.process(image)
+def cosine_similarity(a, b):
+    return 1 - cosine(a, b)
 
-    print((results.pose_world_landmarks))
+def process_frame(frame, pose):
+    results = pose.process(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+    landmarks = []
+    if results.pose_landmarks is None:
+        return None
 
-    # Draw the pose annotation on the image.
-    image.flags.writeable = True
-    image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-    mp_drawing.draw_landmarks(
-        image,
-        results.pose_landmarks,
-        mp_pose.POSE_CONNECTIONS,
-        landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style())
-    # Flip the image horizontally for a selfie-view display.
-    cv2.imshow('MediaPipe Pose', cv2.flip(image, 1))
+    for lm_index in upper_body + lower_body:
+        landmarks.append(results.pose_landmarks.landmark[lm_index])
 
-    if cv2.waitKey(5) & 0xFF == 27:
-      break
-cap.release()
+    return normalize_landmarks(landmarks, frame.shape)
+
+def compare_videos(video1, video2):
+    cap1 = cv2.VideoCapture(video1)
+    cap2 = cv2.VideoCapture(video2)
+
+    similarities = []
+    top_5 = []
+
+    with ThreadPoolExecutor() as executor:
+        with mp_pose.Pose(static_image_mode=False) as pose:
+            while cap1.isOpened() and cap2.isOpened():
+                ret1, frame1 = cap1.read()
+                ret2, frame2 = cap2.read()
+
+                if not ret1 or not ret2:
+                    break
+
+                norm_landmarks1 = executor.submit(process_frame, frame1, pose)
+                norm_landmarks2 = executor.submit(process_frame, frame2, pose)
+
+                norm_landmarks1 = norm_landmarks1.result()
+                norm_landmarks2 = norm_landmarks2.result()
+
+                if norm_landmarks1 is None or norm_landmarks2 is None:
+                    continue
+
+                similarity = cosine_similarity(np.array(norm_landmarks1).flatten(),
+                                               np.array(norm_landmarks2).flatten())
+
+                similarities.append(similarity)
+                top_5.append((similarity, frame1, frame2))
+
+                if len(top_5) > 5:
+                    top_5.sort(reverse=True, key=lambda x: x[0])
+                    top_5.pop()
+
+    cap1.release()
+    cap2.release()
+
+    plt.plot(similarities)
+    plt.xlabel("Frames")
+    plt.ylabel("Similarity")
+    plt.show()
+
+    return top_5
+
+if __name__ == "__main__":
+    video1 = "pushups-sample_user.mp4"
+    video2 = "pushups-sample_exp.mp4"
+
+    top_5_frames = compare_videos(video1, video2)
+
+    for i, (similarity, frame1, frame2) in enumerate(top_5_frames):
+        cv2.imwrite(f"beginner_top_{i + 1}.png", frame1)
+        cv2.imwrite(f"expert_top_{i + 1}.png", frame2)
+
+        print(f"Top {i + 1} similarity: {similarity}")

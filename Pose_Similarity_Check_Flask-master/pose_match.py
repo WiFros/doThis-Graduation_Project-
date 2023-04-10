@@ -10,11 +10,11 @@ from openpose_skeleton import skeleton
 import matplotlib.pyplot as plt
 
 face = [0, 1, 2, 3, 4, 25, 26, 27, 28, 29, 30, 31, 32]
-eyes_and_ears = [1, 2, 3, 4, 25, 26, 27, 28, 31, 32]
 upper_body = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 lower_body = [15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+full_body = face + upper_body + lower_body
 exercise_landmarks = {
-    'squat': lower_body,
+    'squat': full_body,
     'pushup': upper_body + lower_body,
     'situp': upper_body+ lower_body,
     # 다른 운동 종류에 대한 랜드마크 인덱스를 추가하세요.
@@ -155,11 +155,12 @@ def get_pose_similarity(video_path1, video_path2, exercise):# main function
 
         for i, index in enumerate(top_indices):
             frame1, frame2 = frame_pairs[index]
-            sk_frame1.append(skeleton.draw(frame1, index))
-            sk_frame2.append(skeleton.draw(frame2, index))
-            cv2.imwrite('./test1_{i}.png', sk_frame1[i]) #test
-            cv2.imwrite('./test2_{i}.png', sk_frame2[i]) #test
-
+            #sk_frame1.append(skeleton.draw(frame1, index))
+            #sk_frame2.append(skeleton.draw(frame2, index))
+            #cv2.imwrite(f"./test1_{i+1}.png", sk_frame1[i]) #test
+            #cv2.imwrite(f"./test2_{i+1}.png", sk_frame2[i]) #test
+            cv2.imwrite(f"video1_frame_{i + 1}_cosine.jpg", frame1)
+            cv2.imwrite(f"video2_frame_{i + 1}_cosine.jpg", frame2)
             similarities.append(similarity_list[index])
     else:
         print("No poses found in one or both videos.")
