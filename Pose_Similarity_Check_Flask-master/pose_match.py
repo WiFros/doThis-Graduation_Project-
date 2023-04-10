@@ -7,6 +7,7 @@ import sys, os
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning, module="mediapipe")
 from openpose_skeleton import skeleton
+import matplotlib.pyplot as plt
 
 face = [0, 1, 2, 3, 4, 25, 26, 27, 28, 29, 30, 31, 32]
 eyes_and_ears = [1, 2, 3, 4, 25, 26, 27, 28, 31, 32]
@@ -18,6 +19,15 @@ exercise_landmarks = {
     'situp': upper_body+ lower_body,
     # 다른 운동 종류에 대한 랜드마크 인덱스를 추가하세요.
 }
+
+def plot_similarity(similarity_list):
+    plt.figure(figsize=(10, 6))
+    plt.plot(similarity_list, marker='o')
+    plt.xlabel('Frame Pair Index')
+    plt.ylabel('Similarity')
+    plt.title('Pose Similarity Over Time')
+    plt.grid()
+    plt.show()
 def process_frame(frame):# pose estimation
     mp_drawing = mp.solutions.drawing_utils
     mp_pose = mp.solutions.pose
@@ -133,7 +143,7 @@ def get_pose_similarity(video_path1, video_path2, exercise):# main function
                 frame1, frame2, similarity_cosine = result
                 similarity_list.append(similarity_cosine)
                 frame_pairs.append((frame1, frame2))
-
+    #plot_similarity(similarity_list)
     cap1.release()
     cap2.release()
     similarities = []
@@ -147,7 +157,9 @@ def get_pose_similarity(video_path1, video_path2, exercise):# main function
             frame1, frame2 = frame_pairs[index]
             sk_frame1.append(skeleton.draw(frame1, index))
             sk_frame2.append(skeleton.draw(frame2, index))
-            #cv2.imwrite('./test.png', sk_frame1[3]) #test
+            cv2.imwrite('./test1_{i}.png', sk_frame1[i]) #test
+            cv2.imwrite('./test2_{i}.png', sk_frame2[i]) #test
+
             similarities.append(similarity_list[index])
     else:
         print("No poses found in one or both videos.")
