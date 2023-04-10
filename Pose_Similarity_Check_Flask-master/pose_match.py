@@ -3,7 +3,9 @@ import mediapipe as mp
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 import concurrent.futures
+import sys, os
 
+from openpose_skeleton import skeleton
 
 def process_frame(frame):
     mp_drawing = mp.solutions.drawing_utils

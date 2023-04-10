@@ -1,15 +1,15 @@
 import cv2
 import numpy as np
 
-def get_angle(p1 : list, p2 : list ,p3 : list, angle_vec : bool) -> float:
-    """ 
-        세점 사이의 끼인 각도 구하기
-    """
-    rad = np.arctan2(p3[1] - p1[1], p3[0] - p1[0]) - np.arctan2(p2[1] - p1[1], p2[0] - p1[0])
-    deg = rad * (180 / np.pi)
-    if angle_vec:
-        deg = 360-abs(deg)
-    return abs(deg)
+# def get_angle(p1 : list, p2 : list ,p3 : list, angle_vec : bool) -> float:
+#     """ 
+#         세점 사이의 끼인 각도 구하기
+#     """
+#     rad = np.arctan2(p3[1] - p1[1], p3[0] - p1[0]) - np.arctan2(p2[1] - p1[1], p2[0] - p1[0])
+#     deg = rad * (180 / np.pi)
+#     if angle_vec:
+#         deg = 360-abs(deg)
+#     return abs(deg)
 
 #-- 파츠명 선언
 BODY_PARTS = { "Head": 0, "Neck": 1, "RShoulder": 2, "RElbow": 3, "RWrist": 4,
