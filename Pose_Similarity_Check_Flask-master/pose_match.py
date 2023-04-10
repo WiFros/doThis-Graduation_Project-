@@ -2,7 +2,7 @@ import cv2
 import mediapipe as mp
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
-import concurrent.futures
+from concurrent.futures import ThreadPoolExecutor
 import sys, os
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning, module="mediapipe")
@@ -81,7 +81,7 @@ def get_frame_similarity_list(video_path1, video_path2, exercise):
 
     similarity_list = []
 
-    with concurrent.futures.ThreadPoolExecutor() as executor:
+    with ThreadPoolExecutor() as executor:
         while cap1.isOpened() and cap2.isOpened():
             ret1, frame1 = cap1.read()
             ret2, frame2 = cap2.read()

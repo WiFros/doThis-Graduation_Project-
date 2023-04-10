@@ -9,8 +9,8 @@ from concurrent.futures import ThreadPoolExecutor
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
 
-upper_body = [11, 12, 13, 14, 15, 16, 23, 24]
-lower_body = [25, 26, 27, 28, 29, 30]
+upper_body = [11, 12, 13, 14, 15, 16, 17]
+lower_body = [25, 26, 27, 28,29,30]
 
 def normalize_landmarks(landmarks, frame_shape):
     height, width, _ = frame_shape
@@ -79,15 +79,30 @@ def compare_videos(video1, video2):
     plt.show()
 
     return top_5
+def draw_landmarks_on_frame(frame, landmarks, connections):
+    frame = frame.copy()
+    for lm in landmarks:
+        x, y = int(lm[0]), int(lm[1])
+        cv2.circle(frame, (x, y), 5, (0, 255, 0), thickness=-1)
 
+    for connection in connections:
+        start, end = connection
+        x_start, y_start = int(landmarks[start][0]), int(landmarks[start][1])
+        x_end, y_end = int(landmarks[end][0]), int(landmarks[end][1])
+
+        cv2.line(frame, (x_start, y_start), (x_end, y_end), (0, 255, 0), thickness=2)
+
+    return frame
 if __name__ == "__main__":
     video1 = "pushups-sample_user.mp4"
     video2 = "pushups-sample_exp.mp4"
 
     top_5_frames = compare_videos(video1, video2)
+    connections = [(0, 1), (1, 2), (2, 3), (4, 5), (5, 6), (6, 7), (8, 9), (10, 11), (11, 12), (12, 13),
+                   (14, 15), (15, 16), (16, 17), (18, 19)]
 
     for i, (similarity, frame1, frame2) in enumerate(top_5_frames):
-        cv2.imwrite(f"beginner_top_{i + 1}.png", frame1)
-        cv2.imwrite(f"expert_top_{i + 1}.png", frame2)
+        cv2.imwrite(f"beginner_top_{i + 1}_skeleton.png", frame1)
+        cv2.imwrite(f"expert_top_{i + 1}_skeleton.png", frame2)
 
         print(f"Top {i + 1} similarity: {similarity}")
