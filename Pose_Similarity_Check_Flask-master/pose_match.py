@@ -6,8 +6,17 @@ import concurrent.futures
 import sys, os
 
 from openpose_skeleton import skeleton
-
-def process_frame(frame):
+face = [0, 1, 2, 3, 4, 25, 26, 27, 28, 29, 30, 31, 32]
+eyes_and_ears = [1, 2, 3, 4, 25, 26, 27, 28, 31, 32]
+upper_body = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+lower_body = [15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+exercise_landmarks = {
+    'squat': lower_body,
+    'pushup': upper_body + lower_body,
+    'situp': upper_body+ lower_body,
+    # 다른 운동 종류에 대한 랜드마크 인덱스를 추가하세요.
+}
+def process_frame(frame):# pose estimation
     mp_drawing = mp.solutions.drawing_utils
     mp_pose = mp.solutions.pose
 
@@ -30,7 +39,7 @@ def process_frame(frame):
 
 
 
-def normalize_landmarks(landmarks):
+def normalize_landmarks(landmarks):# normalize landmarks
     min_x, min_y, min_z = np.min(landmarks[:, :3], axis=0)
     max_x, max_y, max_z = np.max(landmarks[:, :3], axis=0)
 
@@ -39,11 +48,11 @@ def normalize_landmarks(landmarks):
 
     return normalized_landmarks
 
-def pose_similarity_cosine(landmarks1, landmarks2):
+def pose_similarity_cosine(landmarks1, landmarks2, exercise):# cosine similarity
     if landmarks1.shape != landmarks2.shape:
         raise ValueError("Landmarks must have the same shape")
 
-    selected_landmarks = [11, 12, 13, 14, 15, 16, 23, 24, 25, 26, 27, 28]
+    selected_landmarks = exercise_landmarks[exercise]
     similarity = 0
 
     for i in selected_landmarks:
@@ -51,6 +60,34 @@ def pose_similarity_cosine(landmarks1, landmarks2):
 
     return similarity / len(selected_landmarks)
 
+def get_frame_similarity_list(video_path1, video_path2, exercise):
+    video1_path = video_path1
+    video2_path = video_path2
+
+    cap1 = cv2.VideoCapture(video1_path)
+    cap2 = cv2.VideoCapture(video2_path)
+
+    similarity_list = []
+
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        while cap1.isOpened() and cap2.isOpened():
+            ret1, frame1 = cap1.read()
+            ret2, frame2 = cap2.read()
+
+            if not ret1 or not ret2:
+                break
+
+            result = executor.submit(process_pair, frame1, frame2, exercise)
+            result = result.result()
+
+            if result:
+                frame1, frame2, similarity_cosine = result
+                similarity_list.append(similarity_cosine)
+
+    cap1.release()
+    cap2.release()
+
+    return similarity_list
 
 def process_pair(frame1, frame2):
     landmarks1, annotated_frame1 = process_frame(frame1)
@@ -65,47 +102,50 @@ def process_pair(frame1, frame2):
     else:
         return None
 
-video1_path = "pushups-sample_exp.mp4"
-video2_path = "pushups-sample_user.mp4"
 
-cap1 = cv2.VideoCapture(video1_path)
-cap2 = cv2.VideoCapture(video2_path)
+def get_pose_similarity(video_path1, video_path2, exercise):# main function
 
-similarity_list = []
-frame_pairs = []
+    video1_path = video_path1
+    video2_path = video_path2
 
-with concurrent.futures.ThreadPoolExecutor() as executor:
-    while cap1.isOpened() and cap2.isOpened():
-        ret1, frame1 = cap1.read()
-        ret2, frame2 = cap2.read()
+    cap1 = cv2.VideoCapture(video1_path)
+    cap2 = cv2.VideoCapture(video2_path)
 
-        if not ret1 or not ret2:
-            break
+    similarity_list = []
+    frame_pairs = []
 
-        result = executor.submit(process_pair, frame1, frame2)
-        result = result.result()
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        while cap1.isOpened() and cap2.isOpened():
+            ret1, frame1 = cap1.read()
+            ret2, frame2 = cap2.read()
 
-        if result:
-            frame1, frame2, similarity_cosine = result
-            similarity_list.append(similarity_cosine)
-            frame_pairs.append((frame1, frame2))
+            if not ret1 or not ret2:
+                break
 
-cap1.release()
-cap2.release()
+            result = executor.submit(process_pair, frame1, frame2, exercise)
+            result = result.result()
 
-if len(similarity_list) > 0:
-    similarity_array = np.array(similarity_list)
-    num_top_pairs = min(5, len(similarity_array))
+            if result:
+                frame1, frame2, similarity_cosine = result
+                similarity_list.append(similarity_cosine)
+                frame_pairs.append((frame1, frame2))
 
-    top_indices = sorted(range(len(similarity_array)), key=lambda i: similarity_array[i], reverse=True)[:num_top_pairs]
+    cap1.release()
+    cap2.release()
+    similarities = []
+    if len(similarity_list) > 0:
+        similarity_array = np.array(similarity_list)
+        num_top_pairs = min(5, len(similarity_array))
 
-    for i, index in enumerate(top_indices):
-        frame1, frame2 = frame_pairs[index]
-        cv2.imwrite(f"video1_frame_{i + 1}_cosine.jpg", frame1)
-        cv2.imwrite(f"video2_frame_{i + 1}_cosine.jpg", frame2)
+        top_indices = sorted(range(len(similarity_array)), key=lambda i: similarity_array[i], reverse=True)[:num_top_pairs]
 
-        print(f"Saved pair {i + 1} with Cosine similarity:", similarity_list[index])
-else:
-    print("No poses found in one or both videos.")
+        for i, index in enumerate(top_indices):
+            frame1, frame2 = frame_pairs[index]
+            cv2.imwrite(f"video1_frame_{i + 1}_cosine.jpg", frame1)
+            cv2.imwrite(f"video2_frame_{i + 1}_cosine.jpg", frame2)
 
+            similarities.append(similarity_list[index])
+    else:
+        print("No poses found in one or both videos.")
+    return similarities
 
