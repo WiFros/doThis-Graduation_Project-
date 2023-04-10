@@ -4,7 +4,8 @@ import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 import concurrent.futures
 import sys, os
-
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning, module="mediapipe")
 from openpose_skeleton import skeleton
 
 face = [0, 1, 2, 3, 4, 25, 26, 27, 28, 29, 30, 31, 32]
@@ -78,7 +79,7 @@ def get_frame_similarity_list(video_path1, video_path2, exercise):
             if not ret1 or not ret2:
                 break
 
-            result = executor.submit(process_pair, frame1, frame2, exercise)
+            result = executor.submit(process_pair, frame1, frame2,exercise)
             result = result.result()
 
             if result:
@@ -90,14 +91,14 @@ def get_frame_similarity_list(video_path1, video_path2, exercise):
 
     return similarity_list
 
-def process_pair(frame1, frame2):
+def process_pair(frame1, frame2,exercise):# process frame
     landmarks1, annotated_frame1 = process_frame(frame1)
     landmarks2, annotated_frame2 = process_frame(frame2)
 
     if landmarks1.size > 0 and landmarks2.size > 0:
         normalized_landmarks1 = normalize_landmarks(landmarks1)
         normalized_landmarks2 = normalize_landmarks(landmarks2)
-        similarity_cosine = pose_similarity_cosine(normalized_landmarks1, normalized_landmarks2)
+        similarity_cosine = pose_similarity_cosine(normalized_landmarks1, normalized_landmarks2,exercise)
 
         return frame1, frame2, similarity_cosine
     else:
@@ -144,10 +145,12 @@ def get_pose_similarity(video_path1, video_path2, exercise):# main function
 
         for i, index in enumerate(top_indices):
             frame1, frame2 = frame_pairs[index]
-            sk_frame1[index] = skeleton(frame1, index)
-            sk_frame2[index] = skeleton(frame2, index)
-            cv2.imwrite('./test.png', sk_frame1[3]) #test
+            sk_frame1.append(skeleton.draw(frame1, index))
+            sk_frame2.append(skeleton.draw(frame2, index))
+            #cv2.imwrite('./test.png', sk_frame1[3]) #test
             similarities.append(similarity_list[index])
     else:
         print("No poses found in one or both videos.")
     return similarities
+
+print(get_pose_similarity('pushups-sample_exp.mp4', 'pushups-sample_user.mp4', 'squat'))

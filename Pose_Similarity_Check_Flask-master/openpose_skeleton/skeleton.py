@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-
+import os
 # def get_angle(p1 : list, p2 : list ,p3 : list, angle_vec : bool) -> float:
 #     """ 
 #         세점 사이의 끼인 각도 구하기
@@ -24,9 +24,11 @@ def draw(frame, index): #1~5
                     ["RKnee", "RAnkle"], ["Chest", "LHip"], ["LHip", "LKnee"], ["LKnee", "LAnkle"] ]
 
     #-- 모델 파일 불러오기
-    protoFile = "./pose_deploy_linevec_faster_4_stages.prototxt" 
-    weightsFile = "./pose_iter_160000.caffemodel" 
-
+    protoFile = "pose_deploy_linevec_faster_4_stages.prototxt"
+    weightsFile = "pose_iter_160000.caffemodel"
+    protoFile = os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                             "pose_deploy_linevec_faster_4_stages.prototxt")
+    weightsFile = os.path.join(os.path.dirname(os.path.realpath(__file__)), "pose_iter_160000.caffemodel")
     #-- network 불러오기
     net = cv2.dnn.readNetFromCaffe(protoFile, weightsFile)
 
