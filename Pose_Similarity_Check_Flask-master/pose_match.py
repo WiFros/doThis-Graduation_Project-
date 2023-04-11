@@ -9,6 +9,7 @@ warnings.filterwarnings("ignore", category=UserWarning, module="mediapipe")
 from openpose_skeleton import skeleton
 import matplotlib.pyplot as plt
 import pandas as pd
+
 face = [0, 1, 2, 3, 4, 25, 26, 27, 28, 29, 30, 31, 32]
 upper_body = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 lower_body = [15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
@@ -122,11 +123,6 @@ def save_similarity_table(similarity_list, filepath):
     df = pd.DataFrame(data)
     df.to_csv(filepath, index=False)
 
-
-import matplotlib.pyplot as plt
-import numpy as np
-
-
 def plot_similarity(similarity_list, save_path):
     fig, ax = plt.subplots(figsize=(10, 6))
     flattened_similarity_list = np.array(similarity_list).flatten().tolist()
@@ -138,7 +134,7 @@ def plot_similarity(similarity_list, save_path):
     fig.savefig(save_path)
     plt.close(fig)
 
-    return fig, ax
+    return fig
 
 
 def get_pose_similarity(video_path1, video_path2, exercise):# main function
@@ -169,7 +165,7 @@ def get_pose_similarity(video_path1, video_path2, exercise):# main function
                 frame1, frame2, similarity_cosine = result
                 similarity_list.append(similarity_cosine)
                 frame_pairs.append((frame1, frame2))
-    #plot_similarity(similarity_list)
+
     cap1.release()
     cap2.release()
     similarities = []
@@ -181,17 +177,13 @@ def get_pose_similarity(video_path1, video_path2, exercise):# main function
 
         for i, index in enumerate(top_indices):
             frame1, frame2 = frame_pairs[index]
-            #sk_frame1.append(skeleton.draw(frame1, index))
-            #sk_frame2.append(skeleton.draw(frame2, index))
-            #cv2.imwrite(f"./test1_{i+1}.png", sk_frame1[i]) #test
-            #cv2.imwrite(f"./test2_{i+1}.png", sk_frame2[i]) #test
             cv2.imwrite(f"video1_frame_{i + 1}_cosine.jpg", frame1)
             cv2.imwrite(f"video2_frame_{i + 1}_cosine.jpg", frame2)
             similarities.append(similarity_list[index])
     else:
         print("No poses found in one or both videos.")
 
-    plot_similarity(similarity_list, 'pose_similarity_plot.png')
-    return similarities, similarity_list
+    fig = plot_similarity(similarity_list, 'pose_similarity_plot.png')
+    return similarities, frame_pairs, top_indices, fig
 
 print(get_pose_similarity('pushups-sample_exp.mp4', 'pushups-sample_user.mp4', 'Squat'))
