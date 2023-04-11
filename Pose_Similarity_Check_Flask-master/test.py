@@ -4,13 +4,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.spatial.distance import cosine
 from concurrent.futures import ThreadPoolExecutor
+from scipy.spatial.distance import euclidean
 
 # Mediapipe 설정
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
 
-upper_body = [11, 12, 13, 14, 15, 16, 17]
-lower_body = [25, 26, 27, 28,29,30]
+face = [0, 1, 2, 3, 4, 25, 26, 27, 28, 29, 30, 31, 32]
+upper_body = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+lower_body = [15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+full_body = face + upper_body + lower_body
 
 def normalize_landmarks(landmarks, frame_shape):
     height, width, _ = frame_shape
@@ -23,6 +26,27 @@ def normalize_landmarks(landmarks, frame_shape):
 
 def cosine_similarity(a, b):
     return 1 - cosine(a, b)
+def euclidean_similarity(a, b):
+    return 1 / (1 + euclidean(a, b))
+def get_expert_frames(video_path):
+    cap = cv2.VideoCapture(video_path)
+    fps = int(cap.get(cv2.CAP_PROP_FPS))
+
+    frames = []
+    frame_count = 0
+
+    while cap.isOpened():
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        if frame_count % fps == 0:
+            frames.append(frame)
+
+        frame_count += 1
+
+    cap.release()
+    return frames
 
 def process_frame(frame, pose):
     results = pose.process(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
@@ -30,48 +54,70 @@ def process_frame(frame, pose):
     if results.pose_landmarks is None:
         return None
 
-    for lm_index in upper_body + lower_body:
+    for lm_index in full_body:
         landmarks.append(results.pose_landmarks.landmark[lm_index])
 
     return normalize_landmarks(landmarks, frame.shape)
+def extract_expert_frames(video_path):
+    cap = cv2.VideoCapture(video_path)
+    fps = int(cap.get(cv2.CAP_PROP_FPS))
+    frame_count = 0
+    expert_frames = []
+
+    with mp_pose.Pose(static_image_mode=False) as pose:
+        while cap.isOpened():
+            ret, frame = cap.read()
+            if not ret:
+                break
+
+            if frame_count % fps == 0:
+                landmarks = process_frame(frame, pose)
+                if landmarks is not None:
+                    expert_frames.append((frame, landmarks))
+
+            frame_count += 1
+
+    cap.release()
+    return expert_frames
 
 def compare_videos(video1, video2):
     cap1 = cv2.VideoCapture(video1)
-    cap2 = cv2.VideoCapture(video2)
 
     similarities = []
     top_5 = []
 
-    with ThreadPoolExecutor() as executor:
-        with mp_pose.Pose(static_image_mode=False) as pose:
-            while cap1.isOpened() and cap2.isOpened():
-                ret1, frame1 = cap1.read()
-                ret2, frame2 = cap2.read()
+    expert_frames = get_expert_frames(video2)
 
-                if not ret1 or not ret2:
-                    break
+    with mp_pose.Pose(static_image_mode=False) as pose:
+        while cap1.isOpened():
+            ret1, frame1 = cap1.read()
 
-                norm_landmarks1 = executor.submit(process_frame, frame1, pose)
-                norm_landmarks2 = executor.submit(process_frame, frame2, pose)
+            if not ret1:
+                break
 
-                norm_landmarks1 = norm_landmarks1.result()
-                norm_landmarks2 = norm_landmarks2.result()
+            for expert_frame_index, frame2 in enumerate(expert_frames):
+                norm_landmarks1 = process_frame(frame1, pose)
+                norm_landmarks2 = process_frame(frame2, pose)
 
                 if norm_landmarks1 is None or norm_landmarks2 is None:
                     continue
 
+                #similarity = euclidean_similarity(np.array(norm_landmarks1).flatten(),
+                #                                  np.array(norm_landmarks2).flatten())
                 similarity = cosine_similarity(np.array(norm_landmarks1).flatten(),
                                                np.array(norm_landmarks2).flatten())
-
                 similarities.append(similarity)
-                top_5.append((similarity, frame1, frame2))
 
-                if len(top_5) > 5:
+                if len(top_5) < 5:
+                    top_5.append((similarity, frame1, frame2))
                     top_5.sort(reverse=True, key=lambda x: x[0])
-                    top_5.pop()
+                else:
+                    min_similarity, min_index = min((sim, index) for index, (sim, _, _) in enumerate(top_5))
+                    if similarity > min_similarity:
+                        top_5[min_index] = (similarity, frame1, frame2)
+                        top_5.sort(reverse=True, key=lambda x: x[0])
 
     cap1.release()
-    cap2.release()
 
     plt.plot(similarities)
     plt.xlabel("Frames")
@@ -79,20 +125,8 @@ def compare_videos(video1, video2):
     plt.show()
 
     return top_5
-def draw_landmarks_on_frame(frame, landmarks, connections):
-    frame = frame.copy()
-    for lm in landmarks:
-        x, y = int(lm[0]), int(lm[1])
-        cv2.circle(frame, (x, y), 5, (0, 255, 0), thickness=-1)
 
-    for connection in connections:
-        start, end = connection
-        x_start, y_start = int(landmarks[start][0]), int(landmarks[start][1])
-        x_end, y_end = int(landmarks[end][0]), int(landmarks[end][1])
 
-        cv2.line(frame, (x_start, y_start), (x_end, y_end), (0, 255, 0), thickness=2)
-
-    return frame
 if __name__ == "__main__":
     video1 = "pushups-sample_user.mp4"
     video2 = "pushups-sample_exp.mp4"

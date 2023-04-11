@@ -8,26 +8,28 @@ import warnings
 warnings.filterwarnings("ignore", category=UserWarning, module="mediapipe")
 from openpose_skeleton import skeleton
 import matplotlib.pyplot as plt
-
+import pandas as pd
 face = [0, 1, 2, 3, 4, 25, 26, 27, 28, 29, 30, 31, 32]
 upper_body = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 lower_body = [15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
 full_body = face + upper_body + lower_body
 exercise_landmarks = {
-    'squat': full_body,
-    'pushup': upper_body + lower_body,
-    'situp': upper_body+ lower_body,
+    'Squat': full_body,
+    'Pushup': upper_body + lower_body,
+    'Situp': upper_body+ lower_body,
     # 다른 운동 종류에 대한 랜드마크 인덱스를 추가하세요.
 }
 
-def plot_similarity(similarity_list):
+def plot_similarity(similarity_list, save_path):
     plt.figure(figsize=(10, 6))
     plt.plot(similarity_list, marker='o')
     plt.xlabel('Frame Pair Index')
     plt.ylabel('Similarity')
     plt.title('Pose Similarity Over Time')
     plt.grid()
-    plt.show()
+    plt.savefig(save_path) # save plot to file
+    plt.show() # show plot on screen
+
 def process_frame(frame):# pose estimation
     mp_drawing = mp.solutions.drawing_utils
     mp_pose = mp.solutions.pose
@@ -114,6 +116,30 @@ def process_pair(frame1, frame2,exercise):# process frame
     else:
         return None
 
+def save_similarity_table(similarity_list, filepath):
+    data = {'Frame Pair Index': list(range(1, len(similarity_list) + 1)),
+            'Similarity': similarity_list}
+    df = pd.DataFrame(data)
+    df.to_csv(filepath, index=False)
+
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+def plot_similarity(similarity_list, save_path):
+    fig, ax = plt.subplots(figsize=(10, 6))
+    flattened_similarity_list = np.array(similarity_list).flatten().tolist()
+    ax.plot(flattened_similarity_list, marker='o')
+    ax.set_xlabel('Frame Pair Index')
+    ax.set_ylabel('Similarity')
+    ax.set_title('Pose Similarity Over Time')
+    ax.grid()
+    fig.savefig(save_path)
+    plt.close(fig)
+
+    return fig, ax
+
 
 def get_pose_similarity(video_path1, video_path2, exercise):# main function
 
@@ -128,7 +154,7 @@ def get_pose_similarity(video_path1, video_path2, exercise):# main function
     similarity_list = []
     frame_pairs = []
 
-    with concurrent.futures.ThreadPoolExecutor() as executor:
+    with ThreadPoolExecutor() as executor:
         while cap1.isOpened() and cap2.isOpened():
             ret1, frame1 = cap1.read()
             ret2, frame2 = cap2.read()
@@ -164,6 +190,8 @@ def get_pose_similarity(video_path1, video_path2, exercise):# main function
             similarities.append(similarity_list[index])
     else:
         print("No poses found in one or both videos.")
-    return similarities
 
-print(get_pose_similarity('pushups-sample_exp.mp4', 'pushups-sample_user.mp4', 'squat'))
+    plot_similarity(similarity_list, 'pose_similarity_plot.png')
+    return similarities, similarity_list
+
+print(get_pose_similarity('pushups-sample_exp.mp4', 'pushups-sample_user.mp4', 'Squat'))
