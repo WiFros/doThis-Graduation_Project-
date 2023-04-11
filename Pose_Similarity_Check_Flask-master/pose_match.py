@@ -187,3 +187,4 @@ def get_pose_similarity(video_path1, video_path2, exercise):# main function
     return similarities, frame_pairs, top_indices, fig
 
 print(get_pose_similarity('pushups-sample_exp.mp4', 'pushups-sample_user.mp4', 'Squat'))
+#test
