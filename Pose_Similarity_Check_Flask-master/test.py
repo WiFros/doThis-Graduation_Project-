@@ -81,6 +81,7 @@ def extract_expert_frames(video_path):
     return expert_frames
 
 def compare_videos(video1, video2):
+    mp_holistic = mp.solutions.holistic
     cap1 = cv2.VideoCapture(video1)
 
     similarities = []
@@ -88,7 +89,7 @@ def compare_videos(video1, video2):
 
     expert_frames = get_expert_frames(video2)
 
-    with mp_pose.Pose(static_image_mode=False) as pose:
+    with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
         while cap1.isOpened():
             ret1, frame1 = cap1.read()
 
@@ -96,8 +97,8 @@ def compare_videos(video1, video2):
                 break
 
             for expert_frame_index, frame2 in enumerate(expert_frames):
-                norm_landmarks1 = process_frame(frame1, pose)
-                norm_landmarks2 = process_frame(frame2, pose)
+                norm_landmarks1 = process_frame(frame1, holistic)
+                norm_landmarks2 = process_frame(frame2, holistic)
 
                 if norm_landmarks1 is None or norm_landmarks2 is None:
                     continue
@@ -125,8 +126,6 @@ def compare_videos(video1, video2):
     plt.show()
 
     return top_5
-
-
 if __name__ == "__main__":
     video1 = "pushups-sample_user.mp4"
     video2 = "pushups-sample_exp.mp4"

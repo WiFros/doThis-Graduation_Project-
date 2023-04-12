@@ -21,16 +21,6 @@ exercise_landmarks = {
     # 다른 운동 종류에 대한 랜드마크 인덱스를 추가하세요.
 }
 
-def plot_similarity(similarity_list, save_path):
-    plt.figure(figsize=(10, 6))
-    plt.plot(similarity_list, marker='o')
-    plt.xlabel('Frame Pair Index')
-    plt.ylabel('Similarity')
-    plt.title('Pose Similarity Over Time')
-    plt.grid()
-    plt.savefig(save_path) # save plot to file
-    plt.show() # show plot on screen
-
 def process_frame(frame):# pose estimation
     mp_drawing = mp.solutions.drawing_utils
     mp_pose = mp.solutions.pose
