@@ -150,11 +150,13 @@ def draw_joints(image_path):
     pose.close()
 
     return image
-def get_pose_similarity(video_path1, video_path2, exercise):# main function
+
+
+def get_pose_similarity(video_path1, video_path2, exercise): # main function
 
     global top_indices
-    sk_frame1 = []
-    sk_frame2 = []
+    # joint_image1 = []
+    # joint_image2 = []
     video1_path = video_path1
     video2_path = video_path2
 
@@ -164,7 +166,7 @@ def get_pose_similarity(video_path1, video_path2, exercise):# main function
     similarity_list = []
     frame_pairs = []
 
-    with mp_pose.Pose(static_image_mode = False,min_detection_confidence=0.5) as pose:
+    with mp_pose.Pose(static_image_mode=False, min_detection_confidence=0.5) as pose:
         with ThreadPoolExecutor() as executor:
             while cap1.isOpened() and cap2.isOpened():
                 ret1, frame1 = cap1.read()
@@ -196,8 +198,10 @@ def get_pose_similarity(video_path1, video_path2, exercise):# main function
             cv2.imwrite(f"./jpgs/video2_frame_{i + 1}_cosine.jpg", frame2)
 
             # 관절 그리기
-            joint_image1 = draw_joints(f"./jpgs/video1_frame_{i + 1}_cosine.jpg")
-            joint_image2 = draw_joints(f"./jpgs/video2_frame_{i + 1}_cosine.jpg")
+            joint_image1 = skeleton.draw(frame1, index)
+            joint_image2 = skeleton.draw(frame2, index)
+            # joint_image1 = draw_joints(f"./jpgs/video1_frame_{i + 1}_cosine.jpg")
+            # joint_image2 = draw_joints(f"./jpgs/video2_frame_{i + 1}_cosine.jpg")
 
             # 관절이 그려진 이미지 저장
             cv2.imwrite(f"./jpgs/video1_frame_{i + 1}_cosine_with_joints.jpg", joint_image1)
@@ -210,8 +214,10 @@ def get_pose_similarity(video_path1, video_path2, exercise):# main function
     return similarities, frame_pairs, top_indices, fig
 # 코드의 나머지 부분은 동일합니다.
 
+
 def main():
-    print(get_pose_similarity('pushups-sample_exp.mp4', 'pushups-sample_user.mp4', 'Squat'))
+    get_pose_similarity('pushups-sample_exp.mp4', 'pushups-sample_user.mp4', 'Squat')
+
 
 if __name__ == '__main__':
     main()

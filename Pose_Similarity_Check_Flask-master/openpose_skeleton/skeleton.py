@@ -35,7 +35,7 @@ def draw(frame, index): #1~5
     #-- 이미지 불러오기
     image = frame
 
-    imageHeight, imageWidth, _ = image.shape #-- 불러온 이미지에서 height, width, color를 가져옴
+    imageHeight, imageWidth, _ = image.shape  #-- 불러온 이미지에서 height, width, color를 가져옴
     
     inpBlob = cv2.dnn.blobFromImage(image, 1.0 / 255, (imageWidth, imageHeight), (0, 0, 0), swapRB=False, crop=False) #-- network에 적용하기 위한 전처리
 
@@ -58,7 +58,7 @@ def draw(frame, index): #1~5
         y = (imageHeight * point[1]) / H
 
         #-- 검출된 포인트가 BODY_PARRTS와 대응되면 포인트 추가(검출 결과가 0.1보다 크면) / 검출했으나 해당 파츠가 없는 경우 None    
-        if prob > 0.1 :    
+        if prob > 0.1 :
             # 점찍고 숫자 써줌 - 아래 2줄
             if i==1 or i==14 or i==8 or i==9 or i==10:
                 cv2.circle(image, (int(x), int(y)), 3, (0, 255, 255), thickness=-1, lineType=cv2.FILLED) #-- circle(이미지, 원의 중심, 반지름, 컬러)
@@ -66,6 +66,7 @@ def draw(frame, index): #1~5
             points.append((int(x), int(y)))
         else :
             points.append(None)
+
 
     #-- 생성된 POSE_PAIRS에 맞게 라인 생성
     for pair in POSE_PAIRS:
@@ -77,7 +78,13 @@ def draw(frame, index): #1~5
         if((partA==1 and partB==14) or (partA==14 and partB==8) or (partA==8 and partB==9) or (partA==9 and partB==10)):
             print(partA," 와 ", partB, " 연결\n")
             if points[partA] and points[partB]:
+
                 cv2.line(image, points[partA], points[partB], (0, 255, 0), 2)
 
-    cv2.imwrite('./output.png', image)
     return image
+
+
+
+# image1 = cv2.imread("./image1.jpg")
+# cv2.imshow("Image 1", draw(image1, 1))
+# cv2.waitKey(0)
