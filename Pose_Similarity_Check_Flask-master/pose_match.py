@@ -137,7 +137,7 @@ def draw_joints(image_path):
     image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
     # Mediapipe 포즈 객체 생성
-    pose = mp_pose.Pose(static_image_mode=True, model_complexity=2, min_detection_confidence=0.5)
+    pose = mp_pose.Pose(static_image_mode=True, min_detection_confidence=0.5)
 
     # 포즈를 추정하고 결과를 얻음
     results = pose.process(image_rgb)
@@ -152,6 +152,7 @@ def draw_joints(image_path):
     return image
 def get_pose_similarity(video_path1, video_path2, exercise):# main function
 
+    global top_indices
     sk_frame1 = []
     sk_frame2 = []
     video1_path = video_path1
@@ -163,7 +164,7 @@ def get_pose_similarity(video_path1, video_path2, exercise):# main function
     similarity_list = []
     frame_pairs = []
 
-    with mp_pose.Pose(static_image_mode = False,min_detection_confidence=0.5, model_complexity=1) as pose:
+    with mp_pose.Pose(static_image_mode = False,min_detection_confidence=0.5) as pose:
         with ThreadPoolExecutor() as executor:
             while cap1.isOpened() and cap2.isOpened():
                 ret1, frame1 = cap1.read()
@@ -191,16 +192,16 @@ def get_pose_similarity(video_path1, video_path2, exercise):# main function
 
         for i, index in enumerate(top_indices):
             frame1, frame2 = frame_pairs[index]
-            cv2.imwrite(f"video1_frame_{i + 1}_cosine.jpg", frame1)
-            cv2.imwrite(f"video2_frame_{i + 1}_cosine.jpg", frame2)
+            cv2.imwrite(f"./jpgs/video1_frame_{i + 1}_cosine.jpg", frame1)
+            cv2.imwrite(f"./jpgs/video2_frame_{i + 1}_cosine.jpg", frame2)
 
             # 관절 그리기
-            joint_image1 = draw_joints(f"video1_frame_{i + 1}_cosine.jpg")
-            joint_image2 = draw_joints(f"video2_frame_{i + 1}_cosine.jpg")
+            joint_image1 = draw_joints(f"./jpgs/video1_frame_{i + 1}_cosine.jpg")
+            joint_image2 = draw_joints(f"./jpgs/video2_frame_{i + 1}_cosine.jpg")
 
             # 관절이 그려진 이미지 저장
-            cv2.imwrite(f"video1_frame_{i + 1}_cosine_with_joints.jpg", joint_image1)
-            cv2.imwrite(f"video2_frame_{i + 1}_cosine_with_joints.jpg", joint_image2)
+            cv2.imwrite(f"./jpgs/video1_frame_{i + 1}_cosine_with_joints.jpg", joint_image1)
+            cv2.imwrite(f"./jpgs/video2_frame_{i + 1}_cosine_with_joints.jpg", joint_image2)
             similarities.append(similarity_list[index])
     else:
         print("No poses found in one or both videos.")
