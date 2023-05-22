@@ -17,8 +17,8 @@ image1 = cv2.imread(image_path1)
 image2 = cv2.imread(image_path2)
 
 # 이미지 크기 조정
-image1 = cv2.resize(image1, (368, 368))
-image2 = cv2.resize(image2, (368, 368))
+# image1 = cv2.resize(image1, (368, 368))
+# image2 = cv2.resize(image2, (368, 368))
 
 
 # 이미지 전처리
@@ -86,7 +86,7 @@ for i, sim in enumerate(similarity):
     else:
         color = (0, int(sim * 255), int((1 - sim) * 255))
     cv2.line(image1, (int(x1), int(y1)), (int(x2), int(y2)),  color, 3)
-    print("85", (int(x1), int(y1)), (int(x2), int(y2)),  (255, 0, 0), 8)
+    print("85", (int(x1), int(y1)), (int(x2), int(y2)),  color, 3)
 
 # 결과 이미지 보여주기
 cv2.imshow("Image 1", image1)

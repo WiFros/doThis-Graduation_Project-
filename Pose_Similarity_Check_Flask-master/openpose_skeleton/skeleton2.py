@@ -1,39 +1,80 @@
 import cv2
-import pyopenpose as op
 import numpy as np
+from scipy.spatial.distance import cosine
 
 
-# OpenPose 설정
-params = dict()
-params["model_folder"] = "openpose/models/"  # 모델 폴더 경로
-params["model_pose"] = "COCO"  # 모델 타입
-params["net_resolution"] = "-1x368"  # 이미지 해상도
-params["disable_blending"] = True  # 이미지 합성 안 함
-opWrapper = op.WrapperPython()
-opWrapper.configure(params)
-opWrapper.start()
+# 관절 위치 추출 함수
+def extract_joints(image_path):
+    # 이미지 불러오기
+    image = cv2.imread(image_path)
 
-# 이미지 로드
-img1 = cv2.imread("image1.jpg")
-img2 = cv2.imread("image2.jpg")
+    # 관절 추출 모델 로드
+    net = cv2.dnn.readNetFromTensorflow("graph_opt.pb")
 
-# OpenPose를 사용하여 관절 인식
-datum1 = op.Datum()
-datum1.cvInputData = img1
-opWrapper.emplaceAndPop([datum1])
-joints1 = datum1.poseKeypoints
-connections = op.getPoseBodyPartMapping(op.PoseModel.COCO)
+    # 추출된 관절 저장할 리스트
+    joints = []
 
-datum2 = op.Datum()
-datum2.cvInputData = img2
-opWrapper.emplaceAndPop([datum2])
-joints2 = datum2.poseKeypoints
+    # 추출된 관절 위치 찾기
+    input_blob = cv2.dnn.blobFromImage(image, 1.0/255, (368, 368), (0, 0, 0), swapRB=False, crop=False)
+    net.setInput(input_blob)
+    output = net.forward()
+    points = []
+    for i in range(22):
+        prob_map = output[0, i, :, :]
+        min_val, prob, min_loc, point = cv2.minMaxLoc(prob_map)
+        x = int((image.shape[1] * point[0]) / output.shape[3])
+        y = int((image.shape[0] * point[1]) / output.shape[2])
+        if prob > 0.01:
+            points.append((x, y))
+        else:
+            points.append(None)
+    joints.append(points)
 
-# 관절 좌표와 연결 정보를 저장
-joint_coords = []
-joint_connections = []
-for joint_id in range(len(connections)):
-    joint_pair = connections[joint_id]
-    joint_coords.append((joints1[0][joint_pair[0]], joints1[0][joint_pair[1]], joints2[0][joint_pair[1]], joints2[0][joint_pair[0]]))
-    joint_connections.append(joint_pair)
+    # 관절 위치 반환
+    return joints
+
+
+# 이미지 경로
+image_path1 = "./image1.jpg"
+image_path2 = "./image2.jpg"
+image1 = cv2.imread(image_path1)
+image2 = cv2.imread(image_path2)
+
+# 두 이미지에서 관절 위치 추출
+joints1 = extract_joints(image_path1)
+joints2 = extract_joints(image_path2)
+
+# 관절 간 거리 계산하여 스켈레톤 만들기
+skeleton1 = np.zeros((image1.shape[0], image1.shape[1], 3), np.uint8)
+skeleton2 = np.zeros((image2.shape[0], image2.shape[1], 3), np.uint8)
+
+for i in range(21):
+    if joints1[0][i] and joints1[0][i+1]:
+        cv2.line(skeleton1, joints1[0][i], joints1[0][i+1], (255, 255, 255), 2)
+    if joints2[0][i] and joints2[0][i+1]:
+        cv2.line(skeleton2, joints2[0][i], joints2[0][i+1], (255, 255, 255), 2)
+
+
+# 코사인 유사도 계산
+cosine_similarity = cosine(joints1, joints2)
+
+# 스켈레톤 색상 지정
+if cosine_similarity >= 0.9:
+    color = (0, 255, 0)  # 녹색
+elif cosine_similarity >= 0.7:
+    color = (0, 0, 255)  # 빨간색
+else:
+    color = (255, 0, 0)  # 파란색
+
+# 색상 지정한 스켈레톤 출력
+skeleton = cv2.addWeighted(skeleton1, 0.5, skeleton2, 0.5, 0)
+skeleton[skeleton == [0, 0, 0]] = color
+cv2.imshow("Skeleton", skeleton)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+
+
+
+
 
