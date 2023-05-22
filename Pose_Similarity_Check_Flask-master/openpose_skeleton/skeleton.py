@@ -99,6 +99,9 @@ def calculate_cosine_similarity(line1, line2):
     return cosine_similarity
 
 def main(frame1, frame2):
+    index_arr = []
+    advice_str = ""
+
     image1 = frame1
     image2 = frame2
 
@@ -106,7 +109,7 @@ def main(frame1, frame2):
     image22, selectedPoints2 = draw(image2, 2)
 
     # 코사인 유사도에 따라 색상을 다르게 설정하여 스켈레톤 그리기
-    for line1, line2 in zip(selectedPoints1, selectedPoints2):
+    for index, (line1, line2) in enumerate(zip(selectedPoints1, selectedPoints2)):
         cosine_similarity = calculate_cosine_similarity(line1, line2)
         if cosine_similarity > 0.95:
             color = (255, 0, 0)  # 파란색
@@ -114,9 +117,20 @@ def main(frame1, frame2):
             color = (0, 255, 0)  # 초록색
         elif cosine_similarity > 0.8:
             color = (0, 165, 255)  # 주황색
+            index_arr.append(index)
         else:
-            color = (0, 0, 255)  # 노란색
+            color = (0, 0, 255)  # 빨간색
+            index_arr.append(index)
         cv2.line(image11, line1[0], line1[1], color, 2)
         cv2.line(image22, line2[0], line2[1], color, 2)
 
-    return image11, image22
+    if 0 in index_arr:
+        advice_str += "고개를 들어주세요\n"
+    if 1 in index_arr:
+        advice_str += "허리와 엉덩이 각을 주의해주세요\n"
+    if 2 in index_arr:
+        advice_str += "앉는 정도를 신경써주세요\n"
+    if 3 in index_arr:
+        advice_str += "무릎 각도를 주의해주세요\n"
+
+    return image11, image22, advice_str

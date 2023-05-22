@@ -108,8 +108,10 @@ image22, selectedPoints2 = draw(image2, 2)
 print("selectedPoints1", selectedPoints1)
 print("selectedPoints2", selectedPoints2)
 
+index_arr = []
+advice_str = ""
 # 코사인 유사도에 따라 색상을 다르게 설정하여 스켈레톤 그리기
-for line1, line2 in zip(selectedPoints1, selectedPoints2):
+for index, (line1, line2) in enumerate(zip(selectedPoints1, selectedPoints2)):
     cosine_similarity = calculate_cosine_similarity(line1, line2)
     if cosine_similarity > 0.95:
         color = (255, 0, 0)  # 파란색
@@ -117,10 +119,21 @@ for line1, line2 in zip(selectedPoints1, selectedPoints2):
         color = (0, 255, 0)  # 초록색
     elif cosine_similarity > 0.8:
         color = (0, 165, 255)  # 주황색
+        index_arr.append(index)
     else:
         color = (0, 0, 255)  # 빨간색
+        index_arr.append(index)
     cv2.line(image11, line1[0], line1[1], color, 2)
     cv2.line(image22, line2[0], line2[1], color, 2)
+
+if 0 in index_arr:
+    print("고개를 들어주세요")
+if 1 in index_arr:
+    print("허리와 엉덩이 각을 주의해주세요")
+if 2 in index_arr:
+    print("앉는 정도를 신경써주세요")
+if 3 in index_arr:
+    print("무릎 각도를 주의해주세요")
 
 cv2.imshow("Image 1", image11)
 cv2.imshow("Image 2", image22)
