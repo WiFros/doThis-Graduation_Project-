@@ -1,0 +1,33 @@
+# Compose file version
+version: "3.3"
+
+# Make one service
+services:
+  # Service name
+  mlapp:
+    # Container name
+    container_name: dothis
+    # Image -> [docker hub account]/[container_name]
+    image: chohyunsik/dothis
+    # Volume setting -> tempDB/video & image
+    volumes:
+      - tempDB:/tempDB/video
+      - tempDB:/tempDB/result
+      - tempDB:/tempDB/image
+    # Port setting
+    ports:
+      - "5000:5000"
+    # Build
+    build:
+      # Location of Dockerfile
+      context: .
+      dockerfile: Dockerfile
+    # Environment
+    environment:
+      # Python print enable
+      - PYTHONUNBUFFERED=1
+
+# Allow volumes external : true
+volumes:
+  tempDB:
+    external: true
