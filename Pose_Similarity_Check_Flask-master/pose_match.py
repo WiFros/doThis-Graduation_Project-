@@ -3,7 +3,7 @@ import mediapipe as mp
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 from concurrent.futures import ThreadPoolExecutor
-
+import math
 import sys, os
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning, module="mediapipe")
@@ -60,9 +60,11 @@ def pose_similarity_cosine(landmarks1, landmarks2, exercise):# cosine similarity
     similarity = 0
 
     for i in selected_landmarks:
-        similarity += cosine_similarity(landmarks1[i, :3].reshape(1, -1), landmarks2[i, :3].reshape(1, -1))
+        # use [0][0] to convert the 2D array into a scalar value
+        similarity += cosine_similarity(landmarks1[i, :3].reshape(1, -1), landmarks2[i, :3].reshape(1, -1))[0][0]
 
     return similarity / len(selected_landmarks)
+
 
 def get_frame_similarity_list(video_path1, video_path2, exercise):
     video1_path = video_path1
@@ -152,19 +154,26 @@ def draw_joints(image_path):
     return image
 def get_pose_similarity(video_path1, video_path2, exercise):# main function
 
-    sk_frame1 = []
-    sk_frame2 = []
     video1_path = video_path1
     video2_path = video_path2
 
     cap1 = cv2.VideoCapture(video1_path)
     cap2 = cv2.VideoCapture(video2_path)
 
+    # Get the frame per second (fps) of the video
+    fps1 = cap1.get(cv2.CAP_PROP_FPS)
+    fps2 = cap2.get(cv2.CAP_PROP_FPS)
+    # Ensure the two videos have the same fps
+    assert fps1 == fps2, "The two videos should have the same fps for comparison."
+    fps = fps1  # or fps2, they are the same
+
     similarity_list = []
+    time_similarity_list = []  # This will store the (time, similarity) pairs
     frame_pairs = []
 
     with mp_pose.Pose(static_image_mode = False,min_detection_confidence=0.5, model_complexity=1) as pose:
         with ThreadPoolExecutor() as executor:
+            frame_index = 0  # Initialize frame index
             while cap1.isOpened() and cap2.isOpened():
                 ret1, frame1 = cap1.read()
                 ret2, frame2 = cap2.read()
@@ -180,6 +189,12 @@ def get_pose_similarity(video_path1, video_path2, exercise):# main function
                     similarity_list.append(similarity_cosine)
                     frame_pairs.append((frame1, frame2))
 
+                    # Calculate time for each frame
+                    time = frame_index / fps
+                    time_similarity_list.append((time, similarity_cosine))
+
+                    frame_index += 1  # Increase frame index
+
     cap1.release()
     cap2.release()
     similarities = []
@@ -194,11 +209,11 @@ def get_pose_similarity(video_path1, video_path2, exercise):# main function
             cv2.imwrite(f"video1_frame_{i + 1}_cosine.jpg", frame1)
             cv2.imwrite(f"video2_frame_{i + 1}_cosine.jpg", frame2)
 
-            # 관절 그리기
+            # Draw joints
             joint_image1 = draw_joints(f"video1_frame_{i + 1}_cosine.jpg")
             joint_image2 = draw_joints(f"video2_frame_{i + 1}_cosine.jpg")
 
-            # 관절이 그려진 이미지 저장
+            # Save images with joints
             cv2.imwrite(f"video1_frame_{i + 1}_cosine_with_joints.jpg", joint_image1)
             cv2.imwrite(f"video2_frame_{i + 1}_cosine_with_joints.jpg", joint_image2)
             similarities.append(similarity_list[index])
@@ -206,11 +221,40 @@ def get_pose_similarity(video_path1, video_path2, exercise):# main function
         print("No poses found in one or both videos.")
 
     fig = plot_similarity(similarity_list, 'pose_similarity_plot.png')
-    return similarities, frame_pairs, top_indices, fig
-# 코드의 나머지 부분은 동일합니다.
+    return similarities, frame_pairs, top_indices, fig, time_similarity_list
+
 
 def main():
-    print(get_pose_similarity('pushups-sample_exp.mp4', 'pushups-sample_user.mp4', 'Squat'))
+    similarities, frame_pairs, top_indices, fig, time_similarity_list = get_pose_similarity('output1.mp4',
+                                                                                            'output2.mp4',
+                                                                                            'Squat')
+    #print(similarities)
+    #print(top_indices)
+    # Filter out pairs where similarity is less than 70
+    filtered_time_similarity_list = [(time, similarity) for time, similarity in time_similarity_list if
+                                     similarity * 100 >= 70]
+
+    # Separate time and similarity into two lists
+    times = [pair[0] for pair in filtered_time_similarity_list]
+    similarities = [pair[1] for pair in filtered_time_similarity_list]
+    for time, similarity in time_similarity_list:
+        print(f"{time} : {round(similarity, 2)}")
+    def moving_average(x, w):
+        return np.convolve(x, np.ones(w), 'valid') / w
+
+    window_size = 10  # Adjust this to change the amount of smoothing
+    smoothed_similarities = moving_average(similarities, window_size)
+
+    # We need to also shorten the times array so it matches the length of smoothed_similarities
+    shortened_times = times[window_size - 1:]
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(shortened_times, smoothed_similarities, marker='o')
+    plt.xlabel('Time (s)')
+    plt.ylabel('Similarity')
+    plt.title('Smoothed Pose Similarity Over Time (Similarity >= 70%)')
+    plt.grid(True)
+    plt.show()
 
 if __name__ == '__main__':
     main()
