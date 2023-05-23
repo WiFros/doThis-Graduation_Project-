@@ -195,8 +195,9 @@ def get_pose_similarity(video_path1, video_path2, exercise):# main function
             cv2.imwrite(f"video2_frame_{i + 1}_cosine.jpg", frame2)
 
             # 관절 그리기
-            joint_image1 = draw_joints(f"video1_frame_{i + 1}_cosine.jpg")
-            joint_image2 = draw_joints(f"video2_frame_{i + 1}_cosine.jpg")
+            joint_image1, joint_image2, advice = skeleton.main(frame1, frame2)
+#             joint_image1 = draw_joints(f"video1_frame_{i + 1}_cosine.jpg")
+#             joint_image2 = draw_joints(f"video2_frame_{i + 1}_cosine.jpg")
 
             # 관절이 그려진 이미지 저장
             cv2.imwrite(f"video1_frame_{i + 1}_cosine_with_joints.jpg", joint_image1)
