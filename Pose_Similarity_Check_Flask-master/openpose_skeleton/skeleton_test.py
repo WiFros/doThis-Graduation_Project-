@@ -52,10 +52,10 @@ def draw(frame, index):  # 1~5
         #-- 검출된 포인트가 BODY_PARRTS와 대응되면 포인트 추가(검출 결과가 0.1보다 크면) / 검출했으나 해당 파츠가 없는 경우 None
         if prob > 0.1:
             # 점찍고 숫자 써줌 - 아래 2줄
-            if i == 1 or i == 14 or i == 8 or i == 9 or i == 10:
-                cv2.circle(image, (int(x), int(y)), 3, (0, 255, 255), thickness=-1, lineType=cv2.FILLED)  #-- circle(이미지, 원의 중심, 반지름, 컬러)
-                cv2.putText(image, "({},{})".format(int(x), int(y)), (int(x), int(y)), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
-                            (0, 0, 255), 1, lineType=cv2.LINE_AA)  # 포인트 좌표 표시
+            # if i == 1 or i == 14 or i == 8 or i == 9 or i == 10:
+                # cv2.circle(image, (int(x), int(y)), 3, (0, 255, 255), thickness=-1, lineType=cv2.FILLED)  #-- circle(이미지, 원의 중심, 반지름, 컬러)
+                # cv2.putText(image, "({},{})".format(int(x), int(y)), (int(x), int(y)), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
+                #             (0, 0, 255), 1, lineType=cv2.LINE_AA)  # 포인트 좌표 표시
 
             points.append((int(x), int(y)))
         else:
@@ -157,11 +157,22 @@ print(angle_diff)
 
 #각 selectedpoint 지점에 angle_diff 값에 따라 색상 다르게 칠하기
 for i in range(len(angle_diff)):
-    if angle_diff[i] > 10:
-        radius = 10
-    elif angle_diff[i] < 10:
+    if angle_diff[i] < 5:
         radius = 2
-    cv2.circle(image22, selectedPoints2[i][1], radius, (0, 255, 255), thickness=-1, lineType=cv2.FILLED)  # -- circle(이미지, 원의 중심, 반지름, 컬러)
+        color = (255, 0, 0)
+    elif angle_diff[i] < 10:
+        radius = 4
+        color = (0, 255, 0)
+    elif angle_diff[i] < 30:
+        radius = 6
+        color = (0, 255, 255)
+    elif angle_diff[i] < 50:
+        radius = 8
+        color = (0, 165, 255)
+    elif angle_diff[i] < 100:
+        radius = 10
+        color = (0, 0, 255)
+    cv2.circle(image22, selectedPoints2[i][1], radius, color, thickness=-1, lineType=cv2.FILLED)  # -- circle(이미지, 원의 중심, 반지름, 컬러)
 
 index_arr = []
 advice_str = ""
