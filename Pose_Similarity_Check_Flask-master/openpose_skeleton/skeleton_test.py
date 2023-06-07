@@ -54,12 +54,14 @@ def draw(frame, index):  # 1~5
             # 점찍고 숫자 써줌 - 아래 2줄
             if i == 1 or i == 14 or i == 8 or i == 9 or i == 10:
                 cv2.circle(image, (int(x), int(y)), 3, (0, 255, 255), thickness=-1, lineType=cv2.FILLED)  #-- circle(이미지, 원의 중심, 반지름, 컬러)
-            # cv2.putText(image, "{}".format(i), (int(x), int(y)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, lineType=cv2.LINE_AA) # 각 랜드마크 표시
+                cv2.putText(image, "({},{})".format(int(x), int(y)), (int(x), int(y)), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
+                            (0, 0, 255), 1, lineType=cv2.LINE_AA)  # 포인트 좌표 표시
+
             points.append((int(x), int(y)))
         else:
             points.append(None)
 
-    #-- 생성된 POSE_PAIRS에 맞게 라인 생성
+    #-- 생성된 POSE_PAIRS에 맞게 라인 생성 (그리진 않음)
     for pair in POSE_PAIRS:
         partA = pair[0]  #-- 머리
         partA = BODY_PARTS[partA]  # 0
@@ -99,6 +101,32 @@ def calculate_cosine_similarity(line1, line2):
     return cosine_similarity
 
 
+def calculate_angle(point_A, point_B, point_C):
+    # 공통된 좌표 B를 기준으로 선분 AB와 선분 BC의 벡터를 계산합니다
+    vector_AB = (point_A[0] - point_B[0], point_A[1] - point_B[1])
+    vector_BC = (point_C[0] - point_B[0], point_C[1] - point_B[1])
+
+    # 선분 AB와 선분 BC의 벡터 내적을 계산합니다
+    dot_product = vector_AB[0] * vector_BC[0] + vector_AB[1] * vector_BC[1]
+
+    # 선분 AB와 선분 BC의 길이를 계산합니다
+    length_AB = math.sqrt(vector_AB[0] ** 2 + vector_AB[1] ** 2)
+    length_BC = math.sqrt(vector_BC[0] ** 2 + vector_BC[1] ** 2)
+
+    # 두 벡터의 길이가 0이면 각도를 구할 수 없으므로 None을 반환합니다
+    if length_AB == 0 or length_BC == 0:
+        return None
+
+    # 두 벡터의 내적을 이용하여 라디안으로 각도를 계산합니다
+    cos_theta = dot_product / (length_AB * length_BC)
+    angle_rad = math.acos(cos_theta)
+
+    # 라디안 각도를 도로 변환하여 반환합니다
+    angle_deg = math.degrees(angle_rad)
+
+    return angle_deg
+
+
 image1 = cv2.imread("./image1.jpg")
 image2 = cv2.imread("./image3.jpg")
 
@@ -107,6 +135,33 @@ image22, selectedPoints2 = draw(image2, 2)
 
 print("selectedPoints1", selectedPoints1)
 print("selectedPoints2", selectedPoints2)
+
+selectedPoints = [selectedPoints1, selectedPoints2]  # 선택된 점들의 리스트
+angles = []  # 각도를 저장할 이중배열
+
+for i, points in enumerate(selectedPoints):
+    angle_list = []  # 한 점과 그 다음 점 사이의 각도를 저장할 리스트
+    for j in range(len(points)-1):
+        # print("point{}{}".format(i, j), (points[j][0], points[j][1], points[j+1][1]))
+        angle = calculate_angle(points[j][0], points[j][1], points[j+1][1])
+        # print("angle{}{}".format(i, j), angle)
+        angle_list.append(angle)  # 각도를 리스트에 추가
+    angles.append(angle_list)  # 점들의 각도 리스트를 이중배열에 추가
+
+print(angles)
+angle_diff = []
+for j in range(len(angles[1])):
+    angle_diff.append(abs(angles[0][j] - angles[1][j]))
+
+print(angle_diff)
+
+#각 selectedpoint 지점에 angle_diff 값에 따라 색상 다르게 칠하기
+for i in range(len(angle_diff)):
+    if angle_diff[i] > 10:
+        radius = 10
+    elif angle_diff[i] < 10:
+        radius = 2
+    cv2.circle(image22, selectedPoints2[i][1], radius, (0, 255, 255), thickness=-1, lineType=cv2.FILLED)  # -- circle(이미지, 원의 중심, 반지름, 컬러)
 
 index_arr = []
 advice_str = ""
@@ -127,7 +182,7 @@ for index, (line1, line2) in enumerate(zip(selectedPoints1, selectedPoints2)):
     cv2.line(image22, line2[0], line2[1], color, 2)
 
 if 0 in index_arr:
-    print("고개를 들어주세요")
+    print("상체를 펴주세요")
 if 1 in index_arr:
     print("허리와 엉덩이 각을 주의해주세요")
 if 2 in index_arr:

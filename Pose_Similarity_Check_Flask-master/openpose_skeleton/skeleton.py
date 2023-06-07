@@ -125,7 +125,7 @@ def main(frame1, frame2):
         cv2.line(image22, line2[0], line2[1], color, 2)
 
     if 0 in index_arr:
-        advice_str += "고개를 들어주세요\n"
+        advice_str += "상체를 펴주세요\n"
     if 1 in index_arr:
         advice_str += "허리와 엉덩이 각을 주의해주세요\n"
     if 2 in index_arr:
